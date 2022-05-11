@@ -212,7 +212,7 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void cerrarAplicacion(ActionEvent event) {
-        usuario.addSession(sesion);
+//        usuario.addSession(sesion);
         ((Stage)zoom_slider.getScene().getWindow()).close();
     }
 
@@ -226,7 +226,7 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void cerrarSesión(ActionEvent event) throws IOException {
-        usuario.addSession(sesion);
+//        usuario.addSession(sesion);
         FXMLLoader registrarse = new FXMLLoader(getClass().getResource("/poiupv/run/FXMLLog.fxml"));
         Parent root = registrarse.load();
         Scene scene = new Scene(root);
