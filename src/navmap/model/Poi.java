@@ -1,4 +1,4 @@
-package poiupv.model;
+package navmap.model;
 
 
 import javafx.beans.property.SimpleStringProperty;

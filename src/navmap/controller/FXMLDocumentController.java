@@ -3,17 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package poiupv.controller;
+package navmap.controller;
 
 import java.awt.BasicStroke;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import poiupv.model.Poi;
+import navmap.model.Poi;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 import java.util.ResourceBundle;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -48,6 +49,8 @@ import javafx.scene.shape.Line;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import model.Navegacion;
+import model.Problem;
 import model.Session;
 import model.User;
 
@@ -72,6 +75,7 @@ public class FXMLDocumentController implements Initializable {
     Color color = Color.BLACK;
     int grosor = 3;
     double circuloX;
+    int problemaInt = -1;
     private double inicioXTrans;
     private double inicioYTrans;
     private double baseX;
@@ -81,7 +85,10 @@ public class FXMLDocumentController implements Initializable {
     Circle circlePaintingPoint;
     Circle circlePaintingPoint2;
     Session sesion;
-    
+    Navegacion database;
+    List<Problem> problemas;
+    Problem problema;
+        
     @FXML
     private ListView<Poi> map_listview;
     @FXML
@@ -201,7 +208,12 @@ public class FXMLDocumentController implements Initializable {
         contentGroup.getChildren().add(zoomGroup);
         zoomGroup.getChildren().add(map_scrollpane.getContent());
         map_scrollpane.setContent(contentGroup);
-
+        
+        try {
+            database = Navegacion.getSingletonNavegacion();
+        } catch (Exception e) {
+        }
+        
     }
 
     @FXML
@@ -212,7 +224,7 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void cerrarAplicacion(ActionEvent event) {
-//        usuario.addSession(sesion);
+       // usuario.addSession(sesion);
         ((Stage)zoom_slider.getScene().getWindow()).close();
     }
 
@@ -226,8 +238,8 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void cerrarSesión(ActionEvent event) throws IOException {
-//        usuario.addSession(sesion);
-        FXMLLoader registrarse = new FXMLLoader(getClass().getResource("/poiupv/run/FXMLLog.fxml"));
+       // usuario.addSession(sesion);
+        FXMLLoader registrarse = new FXMLLoader(getClass().getResource("/navmap/run/FXMLLog.fxml"));
         Parent root = registrarse.load();
         Scene scene = new Scene(root);
         Stage stage = new Stage();
@@ -238,12 +250,8 @@ public class FXMLDocumentController implements Initializable {
     }
 
     @FXML
-    private void problAleatorio(ActionEvent event) {
-    }
-
-    @FXML
     private void modifPerfil(ActionEvent event) throws IOException {
-        FXMLLoader registrarse = new FXMLLoader(getClass().getResource("/poiupv/run/FXMLModifPerfil.fxml"));
+        FXMLLoader registrarse = new FXMLLoader(getClass().getResource("/navmap/run/FXMLModifPerfil.fxml"));
         Parent root = registrarse.load();
         Scene scene = new Scene(root);
         Stage stage = new Stage();
@@ -547,4 +555,177 @@ public class FXMLDocumentController implements Initializable {
         grosor = 15;
     }
 
+    @FXML
+    private void problAleatorio(ActionEvent event) {
+        if(problemaInt == -1){
+            problemas = database.getProblems();
+            Random random = new Random(); 
+            int index = random.nextInt(problemas.size() - 1);
+            problema = problemas.get(index);
+            problemaInt = index;
+        }else {problemaInt = -1;}
+    }
+    
+    @FXML
+    private void probUno(ActionEvent event) {
+        if(problemaInt == -1){
+            problemas = database.getProblems();
+            problema = problemas.get(2);
+            problemaInt = 1;
+        }else {problemaInt = -1;}
+    }
+
+    @FXML
+    private void probDos(ActionEvent event) {
+        if(problemaInt == -1){
+            problemas = database.getProblems();
+            problema = problemas.get(2);
+            problemaInt = 2;
+        }else {problemaInt = -1;}
+    }
+
+    @FXML
+    private void probTres(ActionEvent event) {
+        if(problemaInt == -1){
+            problemas = database.getProblems();
+            problema = problemas.get(3);
+            problemaInt = 3;
+        }else {problemaInt = -1;}
+    }
+
+    @FXML
+    private void probCuatro(ActionEvent event) {
+        if(problemaInt == -1){
+            problemas = database.getProblems();
+            problema = problemas.get(4);
+            problemaInt = 4;
+        }else {problemaInt = -1;}
+    }
+
+    @FXML
+    private void probCinco(ActionEvent event) {
+        if(problemaInt == -1){
+            problemas = database.getProblems();
+            problema = problemas.get(5);
+            problemaInt = 5;
+        }else {problemaInt = -1;}
+    }
+
+    @FXML
+    private void probSeis(ActionEvent event) {
+        if(problemaInt == -1){
+            problemas = database.getProblems();
+            problema = problemas.get(6);
+            problemaInt = 6;
+        }else {problemaInt = -1;}
+    }
+
+    @FXML
+    private void probSiete(ActionEvent event) {
+        if(problemaInt == -1){
+            problemas = database.getProblems();
+            problema = problemas.get(7);
+            problemaInt = 7;
+        }else {problemaInt = -1;}
+    }
+
+    @FXML
+    private void probOcho(ActionEvent event) {
+        if(problemaInt == -1){
+            problemas = database.getProblems();
+            problema = problemas.get(8);
+            problemaInt = 8;
+        }else {problemaInt = -1;}
+    }
+
+    @FXML
+    private void probNueve(ActionEvent event) {
+        if(problemaInt == -1){
+            problemas = database.getProblems();
+            problema = problemas.get(9);
+            problemaInt = 9;
+        }else {problemaInt = -1;}
+    }
+
+    @FXML
+    private void probDiez(ActionEvent event) {
+        if(problemaInt == -1){
+            problemas = database.getProblems();
+            problema = problemas.get(10);
+            problemaInt = 10;
+        }else {problemaInt = -1;}
+    }
+
+    @FXML
+    private void probOnce(ActionEvent event) {
+        if(problemaInt == -1){
+            problemas = database.getProblems();
+            problema = problemas.get(11);
+            problemaInt = 11;
+        }else {problemaInt = -1;}
+    }
+
+    @FXML
+    private void probDoce(ActionEvent event) {
+        if(problemaInt == -1){
+            problemas = database.getProblems();
+            problema = problemas.get(12);
+            problemaInt = 12;
+        }else {problemaInt = -1;}
+    }
+
+    @FXML
+    private void probTrece(ActionEvent event) {
+        if(problemaInt == -1){
+            problemas = database.getProblems();
+            problema = problemas.get(13);
+            problemaInt = 13;
+        }else {problemaInt = -1;}
+    }
+
+    @FXML
+    private void probCatorce(ActionEvent event) {
+        if(problemaInt == -1){
+            problemas = database.getProblems();
+            problema = problemas.get(14);
+            problemaInt = 14;
+        }else {problemaInt = -1;}
+    }
+
+    @FXML
+    private void probQuince(ActionEvent event) {
+        if(problemaInt == -1){
+            problemas = database.getProblems();
+            problema = problemas.get(15);
+            problemaInt = 15;
+        }else {problemaInt = -1;}
+    }
+
+    @FXML
+    private void probDieciseis(ActionEvent event) {
+        if(problemaInt == -1){
+            problemas = database.getProblems();
+            problema = problemas.get(16);
+            problemaInt = 16;
+        }else {problemaInt = -1;}
+    }
+
+    @FXML
+    private void probDiecisiete(ActionEvent event) {
+        if(problemaInt == -1){
+            problemas = database.getProblems();
+            problema = problemas.get(17);
+            problemaInt = 17;
+        }else {problemaInt = -1;}
+    }
+
+    @FXML
+    private void probDieciocho(ActionEvent event) {
+        if(problemaInt == -1){
+            problemas = database.getProblems();
+            problema = problemas.get(18);
+            problemaInt = 18;
+        }else {problemaInt = -1;}
+    }
+    
 }

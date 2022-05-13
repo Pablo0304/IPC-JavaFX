@@ -20,7 +20,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox stylesheets="@../../resources/estilos.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="poiupv.controller.FXMLDocumentController">
+<VBox stylesheets="@../../resources/estilos.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="navmap.controller.FXMLDocumentController">
    <children>
       <HBox alignment="CENTER_RIGHT" fillHeight="false" spacing="5.0" VBox.vgrow="NEVER">
          <children>
@@ -37,8 +37,24 @@
                       <MenuItem mnemonicParsing="false" onAction="#problAleatorio" text="Problema Aleatorio" />
                         <Menu mnemonicParsing="false" text="Todos los Problemas">
                           <items>
-                            <MenuItem mnemonicParsing="false" text="Problema1" />
-                              <MenuItem mnemonicParsing="false" text="Problema2" />
+                            <MenuItem mnemonicParsing="false" onAction="#probUno" text="Problema 1" />
+                              <MenuItem mnemonicParsing="false" onAction="#probDos" text="Problema 2" />
+                              <MenuItem mnemonicParsing="false" onAction="#probTres" text="Problema 3" />
+                              <MenuItem mnemonicParsing="false" onAction="#probCuatro" text="Problema 4" />
+                              <MenuItem mnemonicParsing="false" onAction="#probCinco" text="Problema 5" />
+                              <MenuItem mnemonicParsing="false" onAction="#probSeis" text="Problema 6" />
+                              <MenuItem mnemonicParsing="false" onAction="#probSiete" text="Problema 7" />
+                              <MenuItem mnemonicParsing="false" onAction="#probOcho" text="Problema 8" />
+                              <MenuItem mnemonicParsing="false" onAction="#probNueve" text="Problema 9" />
+                              <MenuItem mnemonicParsing="false" onAction="#probDiez" text="Problema 10" />
+                              <MenuItem mnemonicParsing="false" onAction="#probOnce" text="Problema 11" />
+                              <MenuItem mnemonicParsing="false" onAction="#probDoce" text="Problema 12" />
+                              <MenuItem mnemonicParsing="false" onAction="#probTrece" text="Problema 13" />
+                              <MenuItem mnemonicParsing="false" onAction="#probCatorce" text="Problema 14" />
+                              <MenuItem mnemonicParsing="false" onAction="#probQuince" text="Problema 15" />
+                              <MenuItem mnemonicParsing="false" onAction="#probDieciseis" text="Problema 16" />
+                              <MenuItem mnemonicParsing="false" onAction="#probDiecisiete" text="Problema 17" />
+                              <MenuItem mnemonicParsing="false" onAction="#probDieciocho" text="Problema 18" />
                           </items>
                         </Menu>
                     </items>

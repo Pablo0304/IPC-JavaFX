@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
  */
-package poiupv.controller;
+package navmap.controller;
 
 import com.sun.javafx.logging.PlatformLogger.Level;
 import java.io.IOException;
@@ -76,7 +76,7 @@ public class FXMLLogController implements Initializable {
             // Iniciar sesión como usuario:
             
             //
-            FXMLLoader mapa = new FXMLLoader(getClass().getResource("/poiupv/run/FXMLDocument.fxml"));
+            FXMLLoader mapa = new FXMLLoader(getClass().getResource("/navmap/run/FXMLDocument.fxml"));
             Parent root = mapa.load();
             Scene scene = new Scene(root);
             Stage stage = new Stage();
@@ -89,7 +89,7 @@ public class FXMLLogController implements Initializable {
 
     @FXML
     private void Registrarse(ActionEvent event) throws Exception  {
-        FXMLLoader registrarse = new FXMLLoader(getClass().getResource("/poiupv/run/FXMLRegister.fxml"));
+        FXMLLoader registrarse = new FXMLLoader(getClass().getResource("/navmap/run/FXMLRegister.fxml"));
         Parent root = registrarse.load();
         Scene scene = new Scene(root);
         Stage stage = new Stage();
