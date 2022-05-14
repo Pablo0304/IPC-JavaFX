@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckMenuItem?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox stylesheets="@../../resources/estilos.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="navmap.controller.FXMLDocumentController">
+   <children>
+      <HBox alignment="CENTER_RIGHT" fillHeight="false" spacing="5.0" VBox.vgrow="NEVER">
+         <children>
+            <MenuBar prefWidth="371.0">
+              <menus>
+                <Menu mnemonicParsing="false" text="Fichero">
+                  <items>
+                        <MenuItem mnemonicParsing="false" onAction="#cerrarSesión" text="Cerrar Sesión" />
+                    <MenuItem mnemonicParsing="false" onAction="#cerrarAplicacion" text="Cerrar Applicación" />
+                  </items>
+                </Menu>
+                  <Menu mnemonicParsing="false" text="Problema">
+                    <items>
+                      <MenuItem mnemonicParsing="false" onAction="#problAleatorio" text="Problema Aleatorio" />
+                        <Menu mnemonicParsing="false" text="Todos los Problemas">
+                          <items>
+                            <MenuItem mnemonicParsing="false" onAction="#probUno" text="Problema 1" />
+                              <MenuItem mnemonicParsing="false" onAction="#probDos" text="Problema 2" />
+                              <MenuItem mnemonicParsing="false" onAction="#probTres" text="Problema 3" />
+                              <MenuItem mnemonicParsing="false" onAction="#probCuatro" text="Problema 4" />
+                              <MenuItem mnemonicParsing="false" onAction="#probCinco" text="Problema 5" />
+                              <MenuItem mnemonicParsing="false" onAction="#probSeis" text="Problema 6" />
+                              <MenuItem mnemonicParsing="false" onAction="#probSiete" text="Problema 7" />
+                              <MenuItem mnemonicParsing="false" onAction="#probOcho" text="Problema 8" />
+                              <MenuItem mnemonicParsing="false" onAction="#probNueve" text="Problema 9" />
+                              <MenuItem mnemonicParsing="false" onAction="#probDiez" text="Problema 10" />
+                              <MenuItem mnemonicParsing="false" onAction="#probOnce" text="Problema 11" />
+                              <MenuItem mnemonicParsing="false" onAction="#probDoce" text="Problema 12" />
+                              <MenuItem mnemonicParsing="false" onAction="#probTrece" text="Problema 13" />
+                              <MenuItem mnemonicParsing="false" onAction="#probCatorce" text="Problema 14" />
+                              <MenuItem mnemonicParsing="false" onAction="#probQuince" text="Problema 15" />
+                              <MenuItem mnemonicParsing="false" onAction="#probDieciseis" text="Problema 16" />
+                              <MenuItem mnemonicParsing="false" onAction="#probDiecisiete" text="Problema 17" />
+                              <MenuItem mnemonicParsing="false" onAction="#probDieciocho" text="Problema 18" />
+                          </items>
+                        </Menu>
+                    </items>
+                  </Menu>
+                <Menu mnemonicParsing="false" text="Editar">
+                  <items>
+                        <Menu mnemonicParsing="false" text="Color Trazas">
+                          <items>
+                              <MenuItem mnemonicParsing="false" onAction="#setColorAzul" text="Azul" />
+                              <MenuItem mnemonicParsing="false" onAction="#setColorVerde" text="Verde" />
+                              <MenuItem mnemonicParsing="false" onAction="#setColorRojo" text="Rojo" />
+                            <MenuItem mnemonicParsing="false" onAction="#setColorAmarillo" text="Amarillo" />
+                              <MenuItem mnemonicParsing="false" onAction="#setColorNegro" text="Negro" />
+                          </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Grosor Líneas">
+                          <items>
+                            <MenuItem mnemonicParsing="false" onAction="#setGrosor3" text="3" />
+                              <MenuItem mnemonicParsing="false" onAction="#setGrosor7" text="7" />
+                              <MenuItem mnemonicParsing="false" onAction="#setGrosor10" text="10" />
+                              <MenuItem mnemonicParsing="false" onAction="#setGrosor12" text="12" />
+                              <MenuItem mnemonicParsing="false" onAction="#setGrosor15" text="15" />
+                          </items>
+                        </Menu>
+                    <MenuItem mnemonicParsing="false" onAction="#modifPerfil" text="Modificar Perfil" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Herramientas">
+                  <items>
+                        <Menu mnemonicParsing="false" text="Lápiz">
+                          <items>
+                              <CheckMenuItem fx:id="lapizRCheck" mnemonicParsing="false" onAction="#lapizRVisible" text="Línea Recta Contínua" />
+                              <CheckMenuItem fx:id="lapizCCheck" mnemonicParsing="false" onAction="#lapizCVisible" text="Línea Curva Discontínua" />
+                          </items>
+                        </Menu>
+                        <CheckMenuItem fx:id="gomaCheck" mnemonicParsing="false" onAction="#gomaVisible" text="Goma" />
+                        <CheckMenuItem mnemonicParsing="false" text="Regla" />
+                        <CheckMenuItem mnemonicParsing="false" onAction="#transportadorVisible" text="Transportador" />
+                        <CheckMenuItem fx:id="compasCheck" mnemonicParsing="false" onAction="#compasVisible" text="Compás" />
+                  </items>
+                </Menu>
+                  <Menu mnemonicParsing="false" text="Evolución">
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#acercaDe" text="Acerca de" />
+                     </items>
+                  </Menu>
+              </menus>
+            </MenuBar>
+            <Pane prefHeight="25.0" prefWidth="31.0">
+               <children>
+                  <ImageView fx:id="herramientaActual" fitHeight="36.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../resources/negro.jpg" />
+                     </image>
+                  </ImageView>
+               </children>
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </Pane>
+            <Region HBox.hgrow="ALWAYS" />
+            <Label text="Zoom" />
+            <Button mnemonicParsing="false" onAction="#zoomOut" text="-" />
+            <Slider fx:id="zoom_slider" HBox.hgrow="SOMETIMES" />
+            <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#zoomIn" text="+" />
+         </children>
+         <VBox.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </VBox.margin>
+      </HBox>
+      <SplitPane dividerPositions="0.25752508361204013" VBox.vgrow="ALWAYS">
+         <items>
+            <ScrollPane prefHeight="200.0" prefWidth="200.0">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="156.0" prefWidth="173.0">
+                     <children>
+                        <TextArea fx:id="textoProblema" prefHeight="156.0" prefWidth="172.0" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </ScrollPane>
+            <ScrollPane fx:id="map_scrollpane" hbarPolicy="ALWAYS" onMouseMoved="#muestraPosicion" pannable="true" prefHeight="398.0" prefWidth="358.0" vbarPolicy="ALWAYS">
+               <content>
+                  <Pane fx:id="mapaPanel">
+                     <children>
+                        <ImageView fitHeight="5800.0" fitWidth="9002.0" onMouseDragged="#lineaf" onMousePressed="#lineai" onMouseReleased="#soltarLinea" pickOnBounds="true">
+                           <image>
+                              <Image url="@../../resources/carta_nautica.jpg" />
+                           </image>
+                        </ImageView>
+                        <Pane fx:id="goma" prefHeight="25.0" prefWidth="32.0" visible="false" />
+                        <Pane fx:id="transportador" onMouseDragged="#transportadorDragged" onMousePressed="#transportadorPressed" prefHeight="443.0" prefWidth="443.0" visible="false">
+                           <children>
+                              <ImageView fitHeight="450.0" fitWidth="443.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../resources/transportador.png" />
+                                 </image>
+                              </ImageView>
+                              <Pane layoutX="400.0" layoutY="400.0" onMouseDragged="#rotaTransportador" prefHeight="48.0" prefWidth="47.0" />
+                              <Pane layoutY="400.0" onMouseDragged="#rotaTransportador" prefHeight="41.0" prefWidth="44.0" />
+                              <Pane onMouseDragged="#rotaTransportador" prefHeight="46.0" prefWidth="45.0" />
+                              <Pane layoutX="400.0" onMouseDragged="#rotaTransportador" prefHeight="42.0" prefWidth="45.0" />
+                           </children>
+                        </Pane>
+                        <Pane fx:id="compas" prefHeight="25.0" prefWidth="25.0" visible="false" />
+                        <Pane fx:id="lapizR" prefHeight="17.0" prefWidth="32.0" visible="false" />
+                        <Pane fx:id="lapizC" prefHeight="17.0" prefWidth="32.0" visible="false" />
+                        <Pane prefHeight="122.0" prefWidth="122.0">
+                           <children>
+                              <Label fx:id="user" text="Label" />
+                              <Label fx:id="password" text="Label">
+                                 <padding>
+                                    <Insets top="30.0" />
+                                 </padding>
+                              </Label>
+                           </children>
+                        </Pane>
+                     </children>
+                  </Pane>
+               </content>
+            </ScrollPane>
+         </items>
+      </SplitPane>
+      <HBox alignment="CENTER_RIGHT">
+         <children>
+            <Label fx:id="posicion" minHeight="-Infinity" minWidth="-Infinity" text="SceneX:     ScenY:     " wrapText="true" HBox.hgrow="ALWAYS" />
+         </children>
+         <VBox.margin>
+            <Insets bottom="12.0" right="12.0" top="6.0" />
+         </VBox.margin>
+      </HBox>
+   </children>
+</VBox>

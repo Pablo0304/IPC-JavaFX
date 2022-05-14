@@ -16,6 +16,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -37,6 +39,7 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -88,17 +91,11 @@ public class FXMLDocumentController implements Initializable {
     Navegacion database;
     List<Problem> problemas;
     Problem problema;
-        
-    @FXML
-    private ListView<Poi> map_listview;
+    
     @FXML
     private ScrollPane map_scrollpane;
     @FXML
     private Slider zoom_slider;
-    @FXML
-    private MenuButton map_pin;
-    @FXML
-    private MenuItem pin_info;
     @FXML
     private Label posicion;
     @FXML
@@ -124,6 +121,12 @@ public class FXMLDocumentController implements Initializable {
     private Pane compas;
     @FXML
     private CheckMenuItem compasCheck;
+    @FXML
+    private TextArea textoProblema;
+    @FXML
+    protected Label user;
+    @FXML
+    protected Label password;
     
     
     @FXML
@@ -157,42 +160,21 @@ public class FXMLDocumentController implements Initializable {
         map_scrollpane.setVvalue(scrollV);
     }
 
-    @FXML
-    void listClicked(MouseEvent event) {
-        Poi itemSelected = map_listview.getSelectionModel().getSelectedItem();
+    private void initData() throws IOException {
+//        FXMLLoader log = new FXMLLoader(getClass().getResource("./FXMLLogController.fxml"));
+//        FXMLLogController controladorLog = log.getController();
+//        usuario = controladorLog.userInit();
 
-        // Animación del scroll hasta la posicion del item seleccionado
-        double mapWidth = zoomGroup.getBoundsInLocal().getWidth();
-        double mapHeight = zoomGroup.getBoundsInLocal().getHeight();
-        double scrollH = itemSelected.getPosition().getX() / mapWidth;
-        double scrollV = itemSelected.getPosition().getY() / mapHeight;
-        final Timeline timeline = new Timeline();
-        final KeyValue kv1 = new KeyValue(map_scrollpane.hvalueProperty(), scrollH);
-        final KeyValue kv2 = new KeyValue(map_scrollpane.vvalueProperty(), scrollV);
-        final KeyFrame kf = new KeyFrame(Duration.millis(500), kv1, kv2);
-        timeline.getKeyFrames().add(kf);
-        timeline.play();
-
-        // movemos el objto map_pin hasta la posicion del POI
-        double pinW = map_pin.getBoundsInLocal().getWidth();
-        double pinH = map_pin.getBoundsInLocal().getHeight();
-        map_pin.setLayoutX(itemSelected.getPosition().getX());
-        map_pin.setLayoutY(itemSelected.getPosition().getY());
-        pin_info.setText(itemSelected.getDescription());
-        map_pin.setVisible(true);
-    }
-
-    private void initData() {
-        hm.put("2F", new Poi("2F", "Edificion del DSIC", 325, 225));
-        hm.put("Agora", new Poi("Agora", "Agora", 600, 360));
-        map_listview.getItems().add(hm.get("2F"));
-        map_listview.getItems().add(hm.get("Agora"));
     }
 
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-        initData();
+    public void initialize(URL url, ResourceBundle rb){
+        try {
+            // TODO
+            initData();
+        } catch (IOException ex) {
+            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         //==========================================================
         // inicializamos el slider y enlazamos con el zoom
         zoom_slider.setMin(0.25);
@@ -213,7 +195,6 @@ public class FXMLDocumentController implements Initializable {
             database = Navegacion.getSingletonNavegacion();
         } catch (Exception e) {
         }
-        
     }
 
     @FXML
@@ -340,21 +321,21 @@ public class FXMLDocumentController implements Initializable {
             //
         }
         
-        // Borrar Línea:
-        linePainting.setOnContextMenuRequested(e -> {
-            ContextMenu menuContext = new ContextMenu();
-            MenuItem borrarItem = new MenuItem("eliminar");
-            menuContext.getItems().add(borrarItem);
-            borrarItem.setOnAction(ev -> {
-                zoomGroup.getChildren().remove((Node)e.getSource());
-                ev.consume();
+        if(setGoma == true){
+            // Borrar Línea:
+            linePainting.setOnContextMenuRequested(e -> {
+                ContextMenu menuContext = new ContextMenu();
+                MenuItem borrarItem = new MenuItem("eliminar");
+                menuContext.getItems().add(borrarItem);
+                borrarItem.setOnAction(ev -> {
+                    zoomGroup.getChildren().remove((Node)e.getSource());
+                    ev.consume();
+                });
+                    menuContext.show(
+                    linePainting, e.getScreenX(), e.getScreenY());
+                e.consume();
             });
-            if(setRLapiz == false && setCLapiz == false && setCompas == false){
-                menuContext.show(
-                linePainting, e.getScreenX(), e.getScreenY());
-            }
-            e.consume();
-        });
+        }
         //
         
     }
@@ -362,7 +343,7 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private void lineaf(MouseEvent event) {
         
-        linePainting.getStyleClass().add("linea");
+        if(setRLapiz == true){linePainting.getStyleClass().add("linea");}
         
         if(compas.isVisible()){
             double radio = Math.abs(event.getX() - circuloX);
@@ -557,7 +538,7 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void problAleatorio(ActionEvent event) {
-        if(problemaInt == -1){
+        if(problemaInt != 0){
             problemas = database.getProblems();
             Random random = new Random(); 
             int index = random.nextInt(problemas.size() - 1);
@@ -568,16 +549,22 @@ public class FXMLDocumentController implements Initializable {
     
     @FXML
     private void probUno(ActionEvent event) {
-        if(problemaInt == -1){
+        if(problemaInt != 1){
             problemas = database.getProblems();
             problema = problemas.get(2);
             problemaInt = 1;
-        }else {problemaInt = -1;}
+            // Agregar problema:
+            
+        }else {
+            problemaInt = -1;
+            // Quitar problema:
+            
+        }
     }
 
     @FXML
     private void probDos(ActionEvent event) {
-        if(problemaInt == -1){
+        if(problemaInt != 2){
             problemas = database.getProblems();
             problema = problemas.get(2);
             problemaInt = 2;
@@ -586,7 +573,7 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void probTres(ActionEvent event) {
-        if(problemaInt == -1){
+        if(problemaInt != 3){
             problemas = database.getProblems();
             problema = problemas.get(3);
             problemaInt = 3;
@@ -595,7 +582,7 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void probCuatro(ActionEvent event) {
-        if(problemaInt == -1){
+        if(problemaInt != 4){
             problemas = database.getProblems();
             problema = problemas.get(4);
             problemaInt = 4;
@@ -604,7 +591,7 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void probCinco(ActionEvent event) {
-        if(problemaInt == -1){
+        if(problemaInt != 5){
             problemas = database.getProblems();
             problema = problemas.get(5);
             problemaInt = 5;
@@ -613,7 +600,7 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void probSeis(ActionEvent event) {
-        if(problemaInt == -1){
+        if(problemaInt != 6){
             problemas = database.getProblems();
             problema = problemas.get(6);
             problemaInt = 6;
@@ -622,7 +609,7 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void probSiete(ActionEvent event) {
-        if(problemaInt == -1){
+        if(problemaInt != 7){
             problemas = database.getProblems();
             problema = problemas.get(7);
             problemaInt = 7;
@@ -631,7 +618,7 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void probOcho(ActionEvent event) {
-        if(problemaInt == -1){
+        if(problemaInt != 8){
             problemas = database.getProblems();
             problema = problemas.get(8);
             problemaInt = 8;
@@ -640,7 +627,7 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void probNueve(ActionEvent event) {
-        if(problemaInt == -1){
+        if(problemaInt != 9){
             problemas = database.getProblems();
             problema = problemas.get(9);
             problemaInt = 9;
@@ -649,7 +636,7 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void probDiez(ActionEvent event) {
-        if(problemaInt == -1){
+        if(problemaInt != 10){
             problemas = database.getProblems();
             problema = problemas.get(10);
             problemaInt = 10;
@@ -658,7 +645,7 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void probOnce(ActionEvent event) {
-        if(problemaInt == -1){
+        if(problemaInt != 11){
             problemas = database.getProblems();
             problema = problemas.get(11);
             problemaInt = 11;
@@ -667,7 +654,7 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void probDoce(ActionEvent event) {
-        if(problemaInt == -1){
+        if(problemaInt != 12){
             problemas = database.getProblems();
             problema = problemas.get(12);
             problemaInt = 12;
@@ -676,7 +663,7 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void probTrece(ActionEvent event) {
-        if(problemaInt == -1){
+        if(problemaInt != 13){
             problemas = database.getProblems();
             problema = problemas.get(13);
             problemaInt = 13;
@@ -685,7 +672,7 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void probCatorce(ActionEvent event) {
-        if(problemaInt == -1){
+        if(problemaInt != 14){
             problemas = database.getProblems();
             problema = problemas.get(14);
             problemaInt = 14;
@@ -694,7 +681,7 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void probQuince(ActionEvent event) {
-        if(problemaInt == -1){
+        if(problemaInt != 15){
             problemas = database.getProblems();
             problema = problemas.get(15);
             problemaInt = 15;
@@ -703,7 +690,7 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void probDieciseis(ActionEvent event) {
-        if(problemaInt == -1){
+        if(problemaInt != 16){
             problemas = database.getProblems();
             problema = problemas.get(16);
             problemaInt = 16;
@@ -712,7 +699,7 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void probDiecisiete(ActionEvent event) {
-        if(problemaInt == -1){
+        if(problemaInt != 17){
             problemas = database.getProblems();
             problema = problemas.get(17);
             problemaInt = 17;
@@ -721,7 +708,7 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void probDieciocho(ActionEvent event) {
-        if(problemaInt == -1){
+        if(problemaInt != 18){
             problemas = database.getProblems();
             problema = problemas.get(18);
             problemaInt = 18;

@@ -31,6 +31,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import DBAccess.NavegacionDAO;
 import DBAccess.NavegacionDAOException;
+import static java.lang.Thread.sleep;
 import model.Navegacion;
 import model.Answer;
 import model.User;
@@ -53,7 +54,7 @@ public class FXMLLogController implements Initializable {
     private Label errorLogin;
     
     Navegacion database;
-    User usuario;
+    public User usuario;
             
     /**
      * Initializes the controller class.
@@ -66,6 +67,10 @@ public class FXMLLogController implements Initializable {
         }
     }    
 
+    public User userInit(){
+        return usuario;
+    }
+    
     @FXML
     private void Aceptar(ActionEvent event) throws IOException {
         if(database.loginUser(user.getText(), pssw.getText()) == null){
@@ -74,7 +79,7 @@ public class FXMLLogController implements Initializable {
             pssw.setText("");
         } else{
             // Iniciar sesión como usuario:
-            
+            usuario = database.loginUser(user.getText(), pssw.getText());
             //
             FXMLLoader mapa = new FXMLLoader(getClass().getResource("/navmap/run/FXMLDocument.fxml"));
             Parent root = mapa.load();
@@ -82,6 +87,11 @@ public class FXMLLogController implements Initializable {
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(scene);
+            
+            FXMLDocumentController docController = mapa.getController();
+            docController.user.setText(usuario.getNickName());
+            docController.password.setText(usuario.getPassword());
+            
             ((Stage)pssw.getScene().getWindow()).close();
             stage.show();
         }
