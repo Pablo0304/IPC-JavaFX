@@ -23,6 +23,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -58,6 +59,8 @@ public class FXMLModifPerfilController implements Initializable {
     private ImageView imagen;
     Navegacion database;
     User usuario;
+    @FXML
+    protected Label user;
     
     /**
      * Initializes the controller class.
@@ -86,8 +89,18 @@ public class FXMLModifPerfilController implements Initializable {
             }
             };
         });
+        
+        
     }    
 
+    public void userInit(User usuari){
+        usuario = usuari;
+    }
+    
+    public void dataInit(Navegacion data){
+        database = data;
+    }
+    
     @FXML
     private void atras(ActionEvent event) {
         ((Stage)correo.getScene().getWindow()).close();
@@ -100,14 +113,13 @@ public class FXMLModifPerfilController implements Initializable {
         String error = "";
         
         if(usuario.checkPassword(psswReg.getText()) && p1.equals(p2) && usuario.checkEmail(correo.getText())){
-            User usuario2 = database.loginUser(" ", pssw2Reg.getText());
-            mensajeError.setText("");
             // Actualizar Usuario:
-            usuario2.setPassword(psswReg.getText());
-            usuario2.setEmail(correo.getText());
-            usuario2.setBirthdate(fecha.getValue());
-            usuario2.setAvatar(imagen.getImage());
+            usuario.setPassword(psswReg.getText());
+            usuario.setEmail(correo.getText());
+            usuario.setBirthdate(fecha.getValue());
+            usuario.setAvatar(imagen.getImage());
             //
+            
             ((Stage)pssw2Reg.getScene().getWindow()).close();
         } else{
             error += "Error de registro en";

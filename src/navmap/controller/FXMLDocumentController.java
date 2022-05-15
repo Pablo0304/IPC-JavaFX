@@ -9,7 +9,6 @@ import java.awt.BasicStroke;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import navmap.model.Poi;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -87,7 +86,7 @@ public class FXMLDocumentController implements Initializable {
     Session sesion;
     List<Problem> problemas;
     Problem problema;
-    User usuarioD;
+    User usuario;
     Navegacion database;
     
     @FXML
@@ -120,13 +119,9 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private CheckMenuItem compasCheck;
     @FXML
-    private TextArea textoProblema;
-    @FXML
     protected Label user;
     @FXML
     protected Label password;
-    @FXML
-    private Label prueba;
     
     
     @FXML
@@ -161,22 +156,24 @@ public class FXMLDocumentController implements Initializable {
     }
 
     private void initData() throws IOException {
-        FXMLLoader log = new FXMLLoader(getClass().getResource("/navmap/run/FXMLLog.fxml"));
-        log.load();
-        FXMLLogController logController = log.getController();
-        usuarioD = logController.userInit();
-//          usuarioD = database.loginUser(user.getText(), password.getText());
     }
-
+    
+    public void userInit(User usuari){
+        usuario = usuari;
+    }
+    
+    public void dataInit(Navegacion data){
+        database = data;
+    }
+    
     @Override
     public void initialize(URL url, ResourceBundle rb){
         
-        try {
+        try {    
             initData();
         } catch (IOException ex) {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println(usuarioD);
         //==========================================================
         // inicializamos el slider y enlazamos con el zoom
         zoom_slider.setMin(0.25);
@@ -232,11 +229,20 @@ public class FXMLDocumentController implements Initializable {
     private void modifPerfil(ActionEvent event) throws IOException {
         FXMLLoader registrarse = new FXMLLoader(getClass().getResource("/navmap/run/FXMLModifPerfil.fxml"));
         Parent root = registrarse.load();
+        
+        // Paso de parámetros:
+        FXMLModifPerfilController modController = registrarse.getController();
+        modController.userInit(usuario);
+        modController.dataInit(database);
+        //
+        
         Scene scene = new Scene(root);
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(scene);
         stage.show();
+        modController.user.setText("Nombre de usuario: " + usuario.getNickName()); 
+
     }
 
     @FXML

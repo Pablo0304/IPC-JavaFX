@@ -54,7 +54,7 @@ public class FXMLLogController implements Initializable {
     private Label errorLogin;
     
     public Navegacion database;
-    protected User usuarioL;
+    public User usuario;
             
     /**
      * Initializes the controller class.
@@ -67,10 +67,6 @@ public class FXMLLogController implements Initializable {
         }
     }
     
-    public User userInit(){
-        return usuarioL;
-    }
-    
     @FXML
     private void Aceptar(ActionEvent event) throws IOException, InterruptedException {
         if(database.loginUser(user.getText(), pssw.getText()) == null){
@@ -79,19 +75,24 @@ public class FXMLLogController implements Initializable {
             pssw.setText("");
         } else{
             // Iniciar sesión como usuario:
-            usuarioL = database.loginUser(user.getText(), pssw.getText());
+            usuario = database.loginUser(user.getText(), pssw.getText());
             //
+            System.out.println();
             FXMLLoader mapa = new FXMLLoader(getClass().getResource("/navmap/run/FXMLDocument.fxml"));
             Parent root = mapa.load();
+            
+            // Paso de parámetros:
+            FXMLDocumentController docController = mapa.getController();
+            docController.userInit(usuario);
+            docController.dataInit(database);
+            //
+            
             Scene scene = new Scene(root);
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(scene);
             stage.show();
-            
-            FXMLDocumentController docController = mapa.getController();
-            docController.user.setText(usuarioL.getNickName());
-            docController.password.setText(usuarioL.getPassword());
+            docController.user.setText(usuario.getNickName());
             ((Stage)pssw.getScene().getWindow()).close();
             
         }

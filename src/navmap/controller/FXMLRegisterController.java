@@ -101,6 +101,7 @@ public class FXMLRegisterController implements Initializable {
         });
     }    
 
+    
     @FXML
     private void atras(ActionEvent event) throws IOException {
         ((Stage)userReg.getScene().getWindow()).close();
