@@ -124,7 +124,7 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </VBox.margin>
       </HBox>
-      <SplitPane dividerPositions="0.25752508361204013" VBox.vgrow="ALWAYS">
+      <SplitPane dividerPositions="0.25752508361204013, 0.5" VBox.vgrow="ALWAYS">
          <items>
             <ScrollPane prefHeight="200.0" prefWidth="200.0">
               <content>
@@ -135,6 +135,7 @@
                   </AnchorPane>
               </content>
             </ScrollPane>
+            <Label fx:id="prueba" text="Label" />
             <ScrollPane fx:id="map_scrollpane" hbarPolicy="ALWAYS" onMouseMoved="#muestraPosicion" pannable="true" prefHeight="398.0" prefWidth="358.0" vbarPolicy="ALWAYS">
                <content>
                   <Pane fx:id="mapaPanel">

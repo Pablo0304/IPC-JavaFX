@@ -53,8 +53,8 @@ public class FXMLLogController implements Initializable {
     @FXML
     private Label errorLogin;
     
-    Navegacion database;
-    public User usuario;
+    public Navegacion database;
+    protected User usuarioL;
             
     /**
      * Initializes the controller class.
@@ -65,21 +65,21 @@ public class FXMLLogController implements Initializable {
             database = Navegacion.getSingletonNavegacion();
         } catch (Exception e) {
         }
-    }    
-
+    }
+    
     public User userInit(){
-        return usuario;
+        return usuarioL;
     }
     
     @FXML
-    private void Aceptar(ActionEvent event) throws IOException {
+    private void Aceptar(ActionEvent event) throws IOException, InterruptedException {
         if(database.loginUser(user.getText(), pssw.getText()) == null){
             errorLogin.setText("Error de logueo, credenciales no válidas.");
             user.setText("");
             pssw.setText("");
         } else{
             // Iniciar sesión como usuario:
-            usuario = database.loginUser(user.getText(), pssw.getText());
+            usuarioL = database.loginUser(user.getText(), pssw.getText());
             //
             FXMLLoader mapa = new FXMLLoader(getClass().getResource("/navmap/run/FXMLDocument.fxml"));
             Parent root = mapa.load();
@@ -87,13 +87,13 @@ public class FXMLLogController implements Initializable {
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(scene);
+            stage.show();
             
             FXMLDocumentController docController = mapa.getController();
-            docController.user.setText(usuario.getNickName());
-            docController.password.setText(usuario.getPassword());
-            
+            docController.user.setText(usuarioL.getNickName());
+            docController.password.setText(usuarioL.getPassword());
             ((Stage)pssw.getScene().getWindow()).close();
-            stage.show();
+            
         }
     }
 

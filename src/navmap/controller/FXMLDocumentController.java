@@ -63,9 +63,6 @@ import model.User;
  */
 public class FXMLDocumentController implements Initializable {
 
-    //=======================================
-    // hashmap para guardar los puntos de interes POI
-    private final HashMap<String, Poi> hm = new HashMap<>();
     // ======================================
     // la variable zoomGroup se utiliza para dar soporte al zoom
     // el escalado se realiza sobre este nodo, al escalar el Group no mueve sus nodos
@@ -88,9 +85,10 @@ public class FXMLDocumentController implements Initializable {
     Circle circlePaintingPoint;
     Circle circlePaintingPoint2;
     Session sesion;
-    Navegacion database;
     List<Problem> problemas;
     Problem problema;
+    User usuarioD;
+    Navegacion database;
     
     @FXML
     private ScrollPane map_scrollpane;
@@ -127,6 +125,8 @@ public class FXMLDocumentController implements Initializable {
     protected Label user;
     @FXML
     protected Label password;
+    @FXML
+    private Label prueba;
     
     
     @FXML
@@ -161,20 +161,22 @@ public class FXMLDocumentController implements Initializable {
     }
 
     private void initData() throws IOException {
-//        FXMLLoader log = new FXMLLoader(getClass().getResource("./FXMLLogController.fxml"));
-//        FXMLLogController controladorLog = log.getController();
-//        usuario = controladorLog.userInit();
-
+        FXMLLoader log = new FXMLLoader(getClass().getResource("/navmap/run/FXMLLog.fxml"));
+        log.load();
+        FXMLLogController logController = log.getController();
+        usuarioD = logController.userInit();
+//          usuarioD = database.loginUser(user.getText(), password.getText());
     }
 
     @Override
     public void initialize(URL url, ResourceBundle rb){
+        
         try {
-            // TODO
             initData();
         } catch (IOException ex) {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        System.out.println(usuarioD);
         //==========================================================
         // inicializamos el slider y enlazamos con el zoom
         zoom_slider.setMin(0.25);
@@ -191,10 +193,6 @@ public class FXMLDocumentController implements Initializable {
         zoomGroup.getChildren().add(map_scrollpane.getContent());
         map_scrollpane.setContent(contentGroup);
         
-        try {
-            database = Navegacion.getSingletonNavegacion();
-        } catch (Exception e) {
-        }
     }
 
     @FXML
