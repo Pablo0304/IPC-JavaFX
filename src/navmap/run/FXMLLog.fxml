@@ -29,7 +29,7 @@
                   </ImageView>
                </children>
             </HBox>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Empresa" textAlignment="CENTER" wrappingWidth="75.515625">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="NavMap" textAlignment="CENTER" wrappingWidth="75.515625">
                <font>
                   <Font size="13.0" />
                </font>

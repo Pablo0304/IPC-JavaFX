@@ -67,6 +67,7 @@ public class FXMLDocumentController implements Initializable {
     // el escalado se realiza sobre este nodo, al escalar el Group no mueve sus nodos
     private Group zoomGroup;
     private boolean setTransportador = false;
+    private boolean setRegla = false;
     private boolean setRLapiz = false;
     private boolean setCLapiz = false;
     private boolean setGoma = false;
@@ -79,6 +80,10 @@ public class FXMLDocumentController implements Initializable {
     private double inicioYTrans;
     private double baseX;
     private double baseY;
+    private double inicioXTrans2;
+    private double inicioYTrans2;
+    private double baseX2;
+    private double baseY2;
     Line linePainting;
     Circle circlePainting;
     Circle circlePaintingPoint;
@@ -122,6 +127,8 @@ public class FXMLDocumentController implements Initializable {
     protected Label user;
     @FXML
     protected Label password;
+    @FXML
+    private Pane regla;
     
     
     @FXML
@@ -219,6 +226,7 @@ public class FXMLDocumentController implements Initializable {
         Parent root = registrarse.load();
         Scene scene = new Scene(root);
         Stage stage = new Stage();
+        stage.setTitle("Inicio Sesión");
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(scene);
         stage.show();
@@ -238,6 +246,7 @@ public class FXMLDocumentController implements Initializable {
         
         Scene scene = new Scene(root);
         Stage stage = new Stage();
+        stage.setTitle("Modificar Perfil");
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(scene);
         stage.show();
@@ -245,6 +254,44 @@ public class FXMLDocumentController implements Initializable {
 
     }
 
+    @FXML
+    private void rotaRegla(MouseEvent event) {
+        double inicial = event.getX();
+        double inicialRota = regla.getRotate();
+        regla.setRotate(inicialRota + ((event.getX()+ event.getY()) / 2));
+        event.consume();
+    }
+    
+    @FXML
+    private void reglaVisible(ActionEvent event) {
+        if(setRegla == false){
+            regla.visibleProperty().set(true);
+            setRegla = true;
+        } else{
+            regla.visibleProperty().set(false);
+            setRegla = false;
+        }
+    }
+    
+    @FXML
+    private void reglaDragged(MouseEvent event) {
+        double despX = event.getSceneX()-inicioXTrans2;
+        double despY = event.getSceneY()-inicioYTrans2;
+        regla.setTranslateX(baseX2+despX*2.5);
+        regla.setTranslateY(baseY2+despY*2.5);
+        event.consume();
+    }
+
+    @FXML
+    private void reglaPressed(MouseEvent event) {
+        inicioXTrans2 = event.getSceneX();
+        inicioYTrans2 = event.getSceneY();
+        baseX2 = regla.getTranslateX();
+        baseY2 = regla.getTranslateY();
+        event.consume ();
+    }
+
+    
     @FXML
     private void transportadorVisible(ActionEvent event) {
         if(setTransportador == false){
@@ -325,7 +372,6 @@ public class FXMLDocumentController implements Initializable {
             //
         }
         
-        if(setGoma == true){
             // Borrar Línea:
             linePainting.setOnContextMenuRequested(e -> {
                 ContextMenu menuContext = new ContextMenu();
@@ -334,13 +380,68 @@ public class FXMLDocumentController implements Initializable {
                 borrarItem.setOnAction(ev -> {
                     zoomGroup.getChildren().remove((Node)e.getSource());
                     ev.consume();
-                });
+                });if(goma.isVisible()){
+                    this.linePainting.setVisible(false);
                     menuContext.show(
-                    linePainting, e.getScreenX(), e.getScreenY());
+                    linePainting, e.getScreenX(), e.getScreenY());}
                 e.consume();
             });
-        }
-        //
+            //
+            
+            // Borrar Centro del Círculo:
+//            if(goma.isVisible()){
+//            circlePaintingPoint2.setOnContextMenuRequested(e -> {
+//                ContextMenu menuContext = new ContextMenu();
+//                MenuItem borrarItem = new MenuItem("eliminar");
+//                menuContext.getItems().add(borrarItem);
+//                borrarItem.setOnAction(ev -> {
+//                    zoomGroup.getChildren().remove((Node)e.getSource());
+//                    ev.consume();
+//                });
+//                    this.circlePaintingPoint2.setVisible(false);
+//                    menuContext.show(
+//                    circlePaintingPoint2, e.getScreenX(), e.getScreenY());
+//                e.consume();
+//            });
+//            }
+            //
+            
+            // Borrar Círculo:
+//            if(goma.isVisible()){
+//                circlePainting.setOnContextMenuRequested(e -> {
+//                    ContextMenu menuContext = new ContextMenu();
+//                    MenuItem borrarItem = new MenuItem("eliminar");
+//                    menuContext.getItems().add(borrarItem);
+//                    borrarItem.setOnAction(ev -> {
+//                        zoomGroup.getChildren().remove((Node)e.getSource());
+//                        ev.consume();
+//                    });
+//                        this.circlePainting.setVisible(false);
+//                        menuContext.show(
+//                        circlePainting, e.getScreenX(), e.getScreenY());
+//                    e.consume();
+//                });
+//            }
+            //
+            
+            // Borrar Vértice de Línea:
+//            if(goma.isVisible()){
+//            circlePaintingPoint.setOnContextMenuRequested(e -> {
+//                ContextMenu menuContext = new ContextMenu();
+//                MenuItem borrarItem = new MenuItem("eliminar");
+//                menuContext.getItems().add(borrarItem);
+//                borrarItem.setOnAction(ev -> {
+//                    zoomGroup.getChildren().remove((Node)e.getSource());
+//                    ev.consume();
+//                });
+//                    this.circlePaintingPoint.setVisible(false);
+//                    menuContext.show(
+//                    circlePaintingPoint, e.getScreenX(), e.getScreenY());
+//                e.consume();
+//            });
+//            }
+            //
+        
         
     }
 
@@ -718,5 +819,8 @@ public class FXMLDocumentController implements Initializable {
             problemaInt = 18;
         }else {problemaInt = -1;}
     }
+
+    
+    
     
 }

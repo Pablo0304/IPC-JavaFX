@@ -89,6 +89,7 @@ public class FXMLLogController implements Initializable {
             
             Scene scene = new Scene(root);
             Stage stage = new Stage();
+            stage.setTitle("NavMap");
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(scene);
             stage.show();
@@ -104,6 +105,7 @@ public class FXMLLogController implements Initializable {
         Parent root = registrarse.load();
         Scene scene = new Scene(root);
         Stage stage = new Stage();
+        stage.setTitle("Registro");
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(scene);
         stage.show();

@@ -89,7 +89,7 @@
                           </items>
                         </Menu>
                         <CheckMenuItem fx:id="gomaCheck" mnemonicParsing="false" onAction="#gomaVisible" text="Goma" />
-                        <CheckMenuItem mnemonicParsing="false" text="Regla" />
+                        <CheckMenuItem mnemonicParsing="false" onAction="#reglaVisible" text="Regla" />
                         <CheckMenuItem mnemonicParsing="false" onAction="#transportadorVisible" text="Transportador" />
                         <CheckMenuItem fx:id="compasCheck" mnemonicParsing="false" onAction="#compasVisible" text="Compás" />
                   </items>
@@ -142,6 +142,17 @@
                               <Image url="@../../resources/carta_nautica.jpg" />
                            </image>
                         </ImageView>
+                        <Pane fx:id="regla" onMouseDragged="#reglaDragged" onMousePressed="#reglaPressed" prefHeight="50.0" prefWidth="417.0" visible="false">
+                           <children>
+                              <ImageView fitHeight="112.0" fitWidth="415.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../resources/regla.jpg" />
+                                 </image>
+                              </ImageView>
+                              <Pane onMouseDragged="#rotaRegla" prefHeight="50.0" prefWidth="109.0" />
+                              <Pane layoutX="310.0" onMouseDragged="#rotaRegla" prefHeight="50.0" prefWidth="109.0" />
+                           </children>
+                        </Pane>
                         <Pane fx:id="goma" prefHeight="25.0" prefWidth="32.0" visible="false" />
                         <Pane fx:id="transportador" onMouseDragged="#transportadorDragged" onMousePressed="#transportadorPressed" prefHeight="443.0" prefWidth="443.0" visible="false">
                            <children>

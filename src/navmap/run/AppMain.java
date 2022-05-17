@@ -22,7 +22,7 @@ public class AppMain extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("FXMLLog.fxml"));
         
         Scene scene = new Scene(root);
-        stage.setTitle("Puntos de interes UPV");
+        stage.setTitle("Inicio Sesión");
         stage.setScene(scene);
         stage.show();
     }

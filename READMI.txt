@@ -1,0 +1,5 @@
+1.- 
+
+2.- Cosas a tener en cuenta:
+Pusimos gifs animados para el avatar pero el usuario no soportaba esa extensión.
+Hemos implementado el borrado de círculos pero el programa se satura y no responde correctamente.

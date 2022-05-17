@@ -133,7 +133,7 @@
                   </ImageView>
                </children>
             </HBox>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Empresa" textAlignment="CENTER" wrappingWidth="131.8642578125">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="NavMap" textAlignment="CENTER" wrappingWidth="131.8642578125">
                <font>
                   <Font size="13.0" />
                </font>
