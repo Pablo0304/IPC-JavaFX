@@ -48,6 +48,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -72,6 +73,7 @@ public class FXMLDocumentController implements Initializable {
     private boolean setCLapiz = false;
     private boolean setGoma = false;
     private boolean setCompas = false;
+    private boolean setAnota = false;
     Color color = Color.BLACK;
     int grosor = 3;
     double circuloX;
@@ -129,6 +131,10 @@ public class FXMLDocumentController implements Initializable {
     protected Label password;
     @FXML
     private Pane regla;
+    @FXML
+    private CheckMenuItem anotaCheck;
+    @FXML
+    private Pane anotacion;
     
     
     @FXML
@@ -212,10 +218,10 @@ public class FXMLDocumentController implements Initializable {
     }
 
     @FXML
-    private void acercaDe(ActionEvent event) {
+    private void mostrarResults(ActionEvent event) {
         Alert mensaje= new Alert(Alert.AlertType.INFORMATION);
         mensaje.setTitle("Acerca de");
-        mensaje.setHeaderText("IPC - 2022");
+        mensaje.setHeaderText("NavMap - 2022");
         mensaje.showAndWait();
     }
 
@@ -277,8 +283,8 @@ public class FXMLDocumentController implements Initializable {
     private void reglaDragged(MouseEvent event) {
         double despX = event.getSceneX()-inicioXTrans2;
         double despY = event.getSceneY()-inicioYTrans2;
-        regla.setTranslateX(baseX2+despX*2.5);
-        regla.setTranslateY(baseY2+despY*2.5);
+        regla.setTranslateX(baseX2+despX*2);
+        regla.setTranslateY(baseY2+despY*2);
         event.consume();
     }
 
@@ -349,6 +355,23 @@ public class FXMLDocumentController implements Initializable {
             circlePaintingPoint.setCenterY(event.getY());
         }
         
+        if(setAnota == true){
+            TextField texto = new TextField();
+            zoomGroup.getChildren().add(texto);
+            texto.setLayoutX(event.getX());
+            texto.setLayoutY(event.getY());
+            texto.requestFocus();
+            texto.setOnAction(e -> {
+                Text textoT = new Text(texto.getText());
+                textoT.setX(texto.getLayoutX());
+                textoT.setY(texto.getLayoutY());
+                textoT.setStyle("-fx-font-family: Gafata; -fx-font-size: 20;");
+                zoomGroup.getChildren().add(textoT);
+                zoomGroup.getChildren().remove(texto);
+                e.consume();                
+            });
+        }
+        
         if(setCompas == true){
             // Centro:
             circlePaintingPoint2 = new Circle(1);
@@ -371,9 +394,9 @@ public class FXMLDocumentController implements Initializable {
             circuloX = event.getX();
             //
         }
-        
+            if(setRLapiz){
             // Borrar Línea:
-            linePainting.setOnContextMenuRequested(e -> {
+            this.linePainting.setOnContextMenuRequested(e -> {
                 ContextMenu menuContext = new ContextMenu();
                 MenuItem borrarItem = new MenuItem("eliminar");
                 menuContext.getItems().add(borrarItem);
@@ -381,11 +404,10 @@ public class FXMLDocumentController implements Initializable {
                     zoomGroup.getChildren().remove((Node)e.getSource());
                     ev.consume();
                 });if(goma.isVisible()){
-                    this.linePainting.setVisible(false);
                     menuContext.show(
                     linePainting, e.getScreenX(), e.getScreenY());}
                 e.consume();
-            });
+            });}
             //
             
             // Borrar Centro del Círculo:
@@ -492,6 +514,8 @@ public class FXMLDocumentController implements Initializable {
         if(setRLapiz == false){
             lapizR.setVisible(true);
             setRLapiz = true;
+            anotacion.setVisible(false);
+            setAnota = false;
             lapizC.setVisible(false);
             setCLapiz = false;
             goma.setVisible(false);
@@ -500,6 +524,7 @@ public class FXMLDocumentController implements Initializable {
             setCompas = false;
             lapizRCheck.setSelected(true);
             lapizCCheck.setSelected(false);
+            anotaCheck.setSelected(false);
             gomaCheck.setSelected(false);
             compasCheck.setSelected(false);
             Image herramientaUso = new Image(new FileInputStream(".\\src\\resources\\lapiz.jpg"));
@@ -518,6 +543,8 @@ public class FXMLDocumentController implements Initializable {
         if(setCLapiz == false){
             lapizC.setVisible(true);
             setCLapiz = true;
+            anotacion.setVisible(false);
+            setAnota = false;
             lapizR.setVisible(false);
             setRLapiz = false;
             goma.setVisible(false);
@@ -525,6 +552,7 @@ public class FXMLDocumentController implements Initializable {
             compas.setVisible(false);
             setCompas = false;
             lapizCCheck.setSelected(true);
+            anotaCheck.setSelected(false);
             lapizRCheck.setSelected(false);
             gomaCheck.setSelected(false); 
             compasCheck.setSelected(false);
@@ -544,6 +572,8 @@ public class FXMLDocumentController implements Initializable {
         if(setGoma == false){
             goma.setVisible(true);
             setGoma = true;
+            anotacion.setVisible(false);
+            setAnota = false;
             lapizR.setVisible(false);
             setRLapiz = false;
             lapizC.setVisible(false);
@@ -551,6 +581,7 @@ public class FXMLDocumentController implements Initializable {
             compas.setVisible(false);
             setCompas = false;
             gomaCheck.setSelected(true);
+            anotaCheck.setSelected(false);
             lapizRCheck.setSelected(false);
             lapizCCheck.setSelected(false);
             compasCheck.setSelected(false);
@@ -566,10 +597,42 @@ public class FXMLDocumentController implements Initializable {
     }
 
     @FXML
+    private void anotaVisible(ActionEvent event) throws FileNotFoundException {
+        if(setAnota == false){
+            anotacion.setVisible(true);
+            setAnota = true;
+            compas.setVisible(false);
+            setCompas = false;
+            goma.setVisible(false);
+            setGoma = false;
+            lapizR.setVisible(false);
+            setRLapiz = false;
+            lapizC.setVisible(false);
+            setCLapiz = false;
+            anotaCheck.setSelected(true);
+            compasCheck.setSelected(false);
+            gomaCheck.setSelected(false);
+            lapizRCheck.setSelected(false);
+            lapizCCheck.setSelected(false);
+            Image herramientaUso = new Image(new FileInputStream(".\\src\\resources\\anota.jpg"));
+            herramientaActual.setImage(herramientaUso);
+        }else{
+            anotacion.setVisible(false);
+            setAnota = false;
+            anotaCheck.setSelected(false);
+            Image herramientaUso = new Image(new FileInputStream(".\\src\\resources\\anota.jpg"));
+            herramientaActual.setImage(herramientaUso);
+        }
+    }
+    
+    
+    @FXML
     private void compasVisible(ActionEvent event) throws FileNotFoundException {
         if(setCompas == false){
             compas.setVisible(true);
             setCompas = true;
+            anotacion.setVisible(false);
+            setAnota = false;
             goma.setVisible(false);
             setGoma = false;
             lapizR.setVisible(false);
@@ -577,6 +640,7 @@ public class FXMLDocumentController implements Initializable {
             lapizC.setVisible(false);
             setCLapiz = false;
             compasCheck.setSelected(true);
+            anotaCheck.setSelected(false);
             gomaCheck.setSelected(false);
             lapizRCheck.setSelected(false);
             lapizCCheck.setSelected(false);
