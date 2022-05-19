@@ -125,40 +125,47 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </VBox.margin>
       </HBox>
-      <SplitPane dividerPositions="0.3584070796460177" VBox.vgrow="ALWAYS">
+      <SplitPane dividerPositions="0.5678466076696165" VBox.vgrow="ALWAYS">
          <items>
-            <ScrollPane prefHeight="398.0" prefWidth="210.0">
+            <ScrollPane prefHeight="398.0" prefWidth="288.0">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="405.0" prefWidth="199.0">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="375.0" prefWidth="370.0">
                      <children>
-                        <VBox prefHeight="364.0" prefWidth="199.0">
+                        <VBox fx:id="vbox" alignment="CENTER" layoutY="-21.0" prefHeight="379.0" prefWidth="371.0">
                            <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Hola este es el pjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj jjjjjjjjjjjjjjjjjjjjjjjjjjjroblema uno un problema un pronlema un problema un problema un problema un problema" wrappingWidth="171.13671875">
+                              <ImageView fitHeight="334.0" fitWidth="368.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../resources/Logo2.png" />
+                                 </image></ImageView>
+                           </children></VBox>
+                        <VBox fx:id="vboxBut" prefHeight="364.0" prefWidth="371.0" visible="false">
+                           <children>
+                              <Text fx:id="textoProblema" strokeType="OUTSIDE" strokeWidth="0.0" text="Hola este es el pjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj jjjjjjjjjjjjjjjjjjjjjjjjjjjroblema uno un problema un pronlema un problema un problema un problema un problema" wrappingWidth="171.13671875">
                                  <VBox.margin>
-                                    <Insets left="30.0" top="30.0" />
+                                    <Insets left="100.0" top="30.0" />
                                  </VBox.margin>
                               </Text>
-                              <HBox prefHeight="77.0" prefWidth="199.0">
+                              <HBox prefHeight="50.0" prefWidth="290.0">
                                  <children>
-                                    <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="70.0" text="Button">
+                                    <Button fx:id="a" mnemonicParsing="false" onAction="#clickA" prefHeight="40.0" prefWidth="140.0" text="Button">
                                        <HBox.margin>
                                           <Insets left="10.0" right="50.0" />
                                        </HBox.margin>
                                     </Button>
-                                    <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="69.0" text="Button" />
+                                    <Button fx:id="b" mnemonicParsing="false" onAction="#clickB" prefHeight="40.0" prefWidth="140.0" text="Button" />
                                  </children>
                                  <VBox.margin>
-                                    <Insets bottom="30.0" left="10.0" top="70.0" />
+                                    <Insets bottom="30.0" left="10.0" top="30.0" />
                                  </VBox.margin>
                               </HBox>
                               <HBox prefHeight="100.0" prefWidth="200.0">
                                  <children>
-                                    <Button mnemonicParsing="false" prefHeight="42.0" prefWidth="73.0" text="Button">
+                                    <Button fx:id="c" mnemonicParsing="false" onAction="#clickC" prefHeight="40.0" prefWidth="140.0" text="Button">
                                        <HBox.margin>
                                           <Insets left="10.0" right="50.0" />
                                        </HBox.margin>
                                     </Button>
-                                    <Button mnemonicParsing="false" prefHeight="42.0" prefWidth="72.0" text="Button" />
+                                    <Button fx:id="d" mnemonicParsing="false" onAction="#clickD" prefHeight="40.0" prefWidth="140.0" text="Button" />
                                  </children>
                                  <VBox.margin>
                                     <Insets left="10.0" />
@@ -221,7 +228,6 @@
             <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="349.0">
                <children>
                   <Label fx:id="user" prefHeight="17.0" prefWidth="90.0" />
-                  <Label fx:id="password" prefHeight="17.0" prefWidth="100.0" />
                </children>
                <HBox.margin>
                   <Insets left="15.0" />

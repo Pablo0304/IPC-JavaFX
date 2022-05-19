@@ -44,6 +44,14 @@
  *                                                                             *
  ******************************************************************************/
 
+.botonRojo{
+    -fx-background-color: red;
+}
+
+.botonVerde{
+    -fx-background-color: greenyellow;
+}
+
 .fondoInterfaz{
     -fx-background-color: lavender;
 }

@@ -77,16 +77,12 @@ public class FXMLLogController implements Initializable {
             // Iniciar sesión como usuario:
             usuario = database.loginUser(user.getText(), pssw.getText());
             //
-            System.out.println();
             FXMLLoader mapa = new FXMLLoader(getClass().getResource("/navmap/run/FXMLDocument.fxml"));
             Parent root = mapa.load();
-            
             // Paso de parámetros:
             FXMLDocumentController docController = mapa.getController();
             docController.userInit(usuario);
-            docController.dataInit(database);
             //
-            
             Scene scene = new Scene(root);
             Stage stage = new Stage();
             stage.setTitle("NavMap");

@@ -5,6 +5,7 @@
  */
 package navmap.controller;
 
+import DBAccess.NavegacionDAOException;
 import java.awt.BasicStroke;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -56,6 +57,7 @@ import model.Navegacion;
 import model.Problem;
 import model.Session;
 import model.User;
+import model.Answer;
 
 /**
  *
@@ -67,6 +69,8 @@ public class FXMLDocumentController implements Initializable {
     // la variable zoomGroup se utiliza para dar soporte al zoom
     // el escalado se realiza sobre este nodo, al escalar el Group no mueve sus nodos
     private Group zoomGroup;
+    private int aciertos = 0;
+    private int fallos = 0;
     private boolean setTransportador = false;
     private boolean setRegla = false;
     private boolean setRLapiz = false;
@@ -91,8 +95,7 @@ public class FXMLDocumentController implements Initializable {
     Circle circlePaintingPoint;
     Circle circlePaintingPoint2;
     Session sesion;
-    List<Problem> problemas;
-    Problem problema;
+    Object problema;
     User usuario;
     Navegacion database;
     
@@ -104,7 +107,6 @@ public class FXMLDocumentController implements Initializable {
     private Label posicion;
     @FXML
     private Pane transportador;
-    private Pane lapiz;
     @FXML
     private Pane goma;
     @FXML
@@ -128,13 +130,25 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     protected Label user;
     @FXML
-    protected Label password;
-    @FXML
     private Pane regla;
     @FXML
     private CheckMenuItem anotaCheck;
     @FXML
     private Pane anotacion;
+    @FXML
+    private Text textoProblema;
+    @FXML
+    private Button a;
+    @FXML
+    private Button b;
+    @FXML
+    private Button c;
+    @FXML
+    private Button d;
+    @FXML
+    private VBox vbox;
+    @FXML
+    private VBox vboxBut;
     
     
     @FXML
@@ -181,10 +195,13 @@ public class FXMLDocumentController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb){
-        
         try {    
-            initData();
-        } catch (IOException ex) {
+            //initData();
+            database = Navegacion.getSingletonNavegacion();
+            
+            System.out.println(database.getProblems().size());
+        
+        } catch (NavegacionDAOException ex) {
             Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
         }
         //==========================================================
@@ -241,14 +258,15 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void modifPerfil(ActionEvent event) throws IOException {
-        FXMLLoader registrarse = new FXMLLoader(getClass().getResource("/navmap/run/FXMLModifPerfil.fxml"));
-        Parent root = registrarse.load();
+        FXMLLoader modif = new FXMLLoader(getClass().getResource("/navmap/run/FXMLModifPerfil.fxml"));
+        Parent root = modif.load();
         
         // Paso de parámetros:
-        FXMLModifPerfilController modController = registrarse.getController();
+        FXMLModifPerfilController modController = modif.getController();
         modController.userInit(usuario);
         modController.dataInit(database);
         //
+        
         
         Scene scene = new Scene(root);
         Stage stage = new Stage();
@@ -333,7 +351,7 @@ public class FXMLDocumentController implements Initializable {
         inicioYTrans = event.getSceneY();
         baseX = transportador.getTranslateX();
         baseY = transportador.getTranslateY();
-        event.consume ();
+        event.consume();
     }
 
     @FXML
@@ -356,6 +374,7 @@ public class FXMLDocumentController implements Initializable {
         }
         
         if(setAnota == true){
+            event.consume();
             TextField texto = new TextField();
             zoomGroup.getChildren().add(texto);
             texto.setLayoutX(event.getX());
@@ -394,21 +413,23 @@ public class FXMLDocumentController implements Initializable {
             circuloX = event.getX();
             //
         }
-            if(setRLapiz){
-            // Borrar Línea:
-            this.linePainting.setOnContextMenuRequested(e -> {
-                ContextMenu menuContext = new ContextMenu();
-                MenuItem borrarItem = new MenuItem("eliminar");
-                menuContext.getItems().add(borrarItem);
-                borrarItem.setOnAction(ev -> {
-                    zoomGroup.getChildren().remove((Node)e.getSource());
-                    ev.consume();
-                });if(goma.isVisible()){
-                    menuContext.show(
-                    linePainting, e.getScreenX(), e.getScreenY());}
-                e.consume();
-            });}
-            //
+        
+        
+        if(setRLapiz){
+        // Borrar Línea:
+        this.linePainting.setOnContextMenuRequested(e -> {
+            ContextMenu menuContext = new ContextMenu();
+            MenuItem borrarItem = new MenuItem("eliminar");
+            menuContext.getItems().add(borrarItem);
+            borrarItem.setOnAction(ev -> {
+                zoomGroup.getChildren().remove((Node)e.getSource());
+                ev.consume();
+            });if(goma.isVisible()){
+                menuContext.show(
+                linePainting, e.getScreenX(), e.getScreenY());}
+            e.consume();
+        });}
+        //
             
             // Borrar Centro del Círculo:
 //            if(goma.isVisible()){
@@ -707,184 +728,703 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void problAleatorio(ActionEvent event) {
+            a.getStyleClass().removeAll("botonRojo");
+            b.getStyleClass().removeAll("botonRojo");
+            c.getStyleClass().removeAll("botonRojo");
+            d.getStyleClass().removeAll("botonRojo");
+            a.getStyleClass().removeAll("botonVerde");
+            b.getStyleClass().removeAll("botonVerde");
+            c.getStyleClass().removeAll("botonVerde");
+            d.getStyleClass().removeAll("botonVerde");
+            b.setDisable(false);
+            c.setDisable(false);
+            a.setDisable(false);
+            d.setDisable(false);
         if(problemaInt != 0){
-            problemas = database.getProblems();
+            // Agregar problema:
+            vbox.setVisible(false);
+            vboxBut.setVisible(true);
+            List<Problem> problemas = database.getProblems();
             Random random = new Random(); 
             int index = random.nextInt(problemas.size() - 1);
             problema = problemas.get(index);
             problemaInt = index;
-        }else {problemaInt = -1;}
+            textoProblema.setText(problemas.get(index).getText());
+            a.setText(problemas.get(index).getAnswers().get(0).getText());
+            b.setText(problemas.get(index).getAnswers().get(1).getText());
+            c.setText(problemas.get(index).getAnswers().get(2).getText());
+            d.setText(problemas.get(index).getAnswers().get(3).getText());
+        }else {
+            problemaInt = -1;
+            // Quitar problema:
+            vbox.setVisible(true);
+            vboxBut.setVisible(false);
+        }
     }
     
     @FXML
     private void probUno(ActionEvent event) {
+            a.getStyleClass().removeAll("botonRojo");
+            b.getStyleClass().removeAll("botonRojo");
+            c.getStyleClass().removeAll("botonRojo");
+            d.getStyleClass().removeAll("botonRojo");
+            a.getStyleClass().removeAll("botonVerde");
+            b.getStyleClass().removeAll("botonVerde");
+            c.getStyleClass().removeAll("botonVerde");
+            d.getStyleClass().removeAll("botonVerde");
+            b.setDisable(false);
+            c.setDisable(false);
+            a.setDisable(false);
+            d.setDisable(false);
         if(problemaInt != 1){
-            problemas = database.getProblems();
-            problema = problemas.get(2);
             problemaInt = 1;
             // Agregar problema:
-            
+            vbox.setVisible(false);
+            vboxBut.setVisible(true);
+            List<Problem> problemas = database.getProblems();
+            textoProblema.setText(problemas.get(0).getText());
+            a.setText(problemas.get(0).getAnswers().get(0).getText());
+            b.setText(problemas.get(0).getAnswers().get(1).getText());
+            c.setText(problemas.get(0).getAnswers().get(2).getText());
+            d.setText(problemas.get(0).getAnswers().get(3).getText());
         }else {
             problemaInt = -1;
             // Quitar problema:
-            
+            vbox.setVisible(true);
+            vboxBut.setVisible(false);
         }
     }
 
     @FXML
     private void probDos(ActionEvent event) {
+            a.getStyleClass().removeAll("botonRojo");
+            b.getStyleClass().removeAll("botonRojo");
+            c.getStyleClass().removeAll("botonRojo");
+            d.getStyleClass().removeAll("botonRojo");
+            a.getStyleClass().removeAll("botonVerde");
+            b.getStyleClass().removeAll("botonVerde");
+            c.getStyleClass().removeAll("botonVerde");
+            d.getStyleClass().removeAll("botonVerde");
+            b.setDisable(false);
+            c.setDisable(false);
+            a.setDisable(false);
+            d.setDisable(false);
         if(problemaInt != 2){
-            problemas = database.getProblems();
-            problema = problemas.get(2);
             problemaInt = 2;
-        }else {problemaInt = -1;}
+            // Agregar problema:
+            vbox.setVisible(false);
+            vboxBut.setVisible(true);
+            List<Problem> problemas = database.getProblems();
+            textoProblema.setText(problemas.get(1).getText());
+            a.setText(problemas.get(1).getAnswers().get(0).getText());
+            b.setText(problemas.get(1).getAnswers().get(1).getText());
+            c.setText(problemas.get(1).getAnswers().get(2).getText());
+            d.setText(problemas.get(1).getAnswers().get(3).getText());
+        }else {
+            problemaInt = -1;
+            // Quitar problema:
+            vbox.setVisible(true);
+            vboxBut.setVisible(false);
+        }
     }
 
     @FXML
     private void probTres(ActionEvent event) {
+            a.getStyleClass().removeAll("botonRojo");
+            b.getStyleClass().removeAll("botonRojo");
+            c.getStyleClass().removeAll("botonRojo");
+            d.getStyleClass().removeAll("botonRojo");
+            a.getStyleClass().removeAll("botonVerde");
+            b.getStyleClass().removeAll("botonVerde");
+            c.getStyleClass().removeAll("botonVerde");
+            d.getStyleClass().removeAll("botonVerde");
+            b.setDisable(false);
+            c.setDisable(false);
+            a.setDisable(false);
+            d.setDisable(false);
         if(problemaInt != 3){
-            problemas = database.getProblems();
-            problema = problemas.get(3);
             problemaInt = 3;
-        }else {problemaInt = -1;}
+            // Agregar problema:
+            vbox.setVisible(false);
+            vboxBut.setVisible(true);
+            List<Problem> problemas = database.getProblems();
+            textoProblema.setText(problemas.get(2).getText());
+            a.setText(problemas.get(2).getAnswers().get(0).getText());
+            b.setText(problemas.get(2).getAnswers().get(1).getText());
+            c.setText(problemas.get(2).getAnswers().get(2).getText());
+            d.setText(problemas.get(2).getAnswers().get(3).getText());
+        }else {
+            problemaInt = -1;
+            // Quitar problema:
+            vbox.setVisible(true);
+            vboxBut.setVisible(false);
+        }
     }
 
     @FXML
     private void probCuatro(ActionEvent event) {
+            a.getStyleClass().removeAll("botonRojo");
+            b.getStyleClass().removeAll("botonRojo");
+            c.getStyleClass().removeAll("botonRojo");
+            d.getStyleClass().removeAll("botonRojo");
+            a.getStyleClass().removeAll("botonVerde");
+            b.getStyleClass().removeAll("botonVerde");
+            c.getStyleClass().removeAll("botonVerde");
+            d.getStyleClass().removeAll("botonVerde");
+            b.setDisable(false);
+            c.setDisable(false);
+            a.setDisable(false);
+            d.setDisable(false);
         if(problemaInt != 4){
-            problemas = database.getProblems();
-            problema = problemas.get(4);
             problemaInt = 4;
-        }else {problemaInt = -1;}
+            // Agregar problema:
+            vbox.setVisible(false);
+            vboxBut.setVisible(true);
+            List<Problem> problemas = database.getProblems();
+            textoProblema.setText(problemas.get(3).getText());
+            a.setText(problemas.get(3).getAnswers().get(0).getText());
+            b.setText(problemas.get(3).getAnswers().get(1).getText());
+            c.setText(problemas.get(3).getAnswers().get(2).getText());
+            d.setText(problemas.get(3).getAnswers().get(3).getText());
+        }else {
+            problemaInt = -1;
+            // Quitar problema:
+            vbox.setVisible(true);
+            vboxBut.setVisible(false);
+        }
     }
 
     @FXML
     private void probCinco(ActionEvent event) {
+            a.getStyleClass().removeAll("botonRojo");
+            b.getStyleClass().removeAll("botonRojo");
+            c.getStyleClass().removeAll("botonRojo");
+            d.getStyleClass().removeAll("botonRojo");
+            a.getStyleClass().removeAll("botonVerde");
+            b.getStyleClass().removeAll("botonVerde");
+            c.getStyleClass().removeAll("botonVerde");
+            d.getStyleClass().removeAll("botonVerde");
+            b.setDisable(false);
+            c.setDisable(false);
+            a.setDisable(false);
+            d.setDisable(false);
         if(problemaInt != 5){
-            problemas = database.getProblems();
-            problema = problemas.get(5);
             problemaInt = 5;
-        }else {problemaInt = -1;}
+            // Agregar problema:
+            vbox.setVisible(false);
+            vboxBut.setVisible(true);
+            List<Problem> problemas = database.getProblems();
+            textoProblema.setText(problemas.get(4).getText());
+            a.setText(problemas.get(4).getAnswers().get(0).getText());
+            b.setText(problemas.get(4).getAnswers().get(1).getText());
+            c.setText(problemas.get(4).getAnswers().get(2).getText());
+            d.setText(problemas.get(4).getAnswers().get(3).getText());
+        }else {
+            problemaInt = -1;
+            // Quitar problema:
+            vbox.setVisible(true);
+            vboxBut.setVisible(false);
+        }
     }
 
     @FXML
     private void probSeis(ActionEvent event) {
+            a.getStyleClass().removeAll("botonRojo");
+            b.getStyleClass().removeAll("botonRojo");
+            c.getStyleClass().removeAll("botonRojo");
+            d.getStyleClass().removeAll("botonRojo");
+            a.getStyleClass().removeAll("botonVerde");
+            b.getStyleClass().removeAll("botonVerde");
+            c.getStyleClass().removeAll("botonVerde");
+            d.getStyleClass().removeAll("botonVerde");
+            b.setDisable(false);
+            c.setDisable(false);
+            a.setDisable(false);
+            d.setDisable(false);
         if(problemaInt != 6){
-            problemas = database.getProblems();
-            problema = problemas.get(6);
             problemaInt = 6;
-        }else {problemaInt = -1;}
+            // Agregar problema:
+            vbox.setVisible(false);
+            vboxBut.setVisible(true);
+            List<Problem> problemas = database.getProblems();
+            textoProblema.setText(problemas.get(5).getText());
+            a.setText(problemas.get(5).getAnswers().get(0).getText());
+            b.setText(problemas.get(5).getAnswers().get(1).getText());
+            c.setText(problemas.get(5).getAnswers().get(2).getText());
+            d.setText(problemas.get(5).getAnswers().get(3).getText());
+        }else {
+            problemaInt = -1;
+            // Quitar problema:
+            vbox.setVisible(true);
+            vboxBut.setVisible(false);
+        }
     }
 
     @FXML
     private void probSiete(ActionEvent event) {
+            a.getStyleClass().removeAll("botonRojo");
+            b.getStyleClass().removeAll("botonRojo");
+            c.getStyleClass().removeAll("botonRojo");
+            d.getStyleClass().removeAll("botonRojo");
+            a.getStyleClass().removeAll("botonVerde");
+            b.getStyleClass().removeAll("botonVerde");
+            c.getStyleClass().removeAll("botonVerde");
+            d.getStyleClass().removeAll("botonVerde");
+            b.setDisable(false);
+            c.setDisable(false);
+            a.setDisable(false);
+            d.setDisable(false);
         if(problemaInt != 7){
-            problemas = database.getProblems();
-            problema = problemas.get(7);
             problemaInt = 7;
-        }else {problemaInt = -1;}
+            // Agregar problema:
+            vbox.setVisible(false);
+            vboxBut.setVisible(true);
+            List<Problem> problemas = database.getProblems();
+            textoProblema.setText(problemas.get(6).getText());
+            a.setText(problemas.get(6).getAnswers().get(0).getText());
+            b.setText(problemas.get(6).getAnswers().get(1).getText());
+            c.setText(problemas.get(6).getAnswers().get(2).getText());
+            d.setText(problemas.get(6).getAnswers().get(3).getText());
+        }else {
+            problemaInt = -1;
+            // Quitar problema:
+            vbox.setVisible(true);
+            vboxBut.setVisible(false);
+        }
     }
 
     @FXML
     private void probOcho(ActionEvent event) {
+            a.getStyleClass().removeAll("botonRojo");
+            b.getStyleClass().removeAll("botonRojo");
+            c.getStyleClass().removeAll("botonRojo");
+            d.getStyleClass().removeAll("botonRojo");
+            a.getStyleClass().removeAll("botonVerde");
+            b.getStyleClass().removeAll("botonVerde");
+            c.getStyleClass().removeAll("botonVerde");
+            d.getStyleClass().removeAll("botonVerde");
+            b.setDisable(false);
+            c.setDisable(false);
+            a.setDisable(false);
+            d.setDisable(false);
         if(problemaInt != 8){
-            problemas = database.getProblems();
-            problema = problemas.get(8);
             problemaInt = 8;
-        }else {problemaInt = -1;}
+            // Agregar problema:
+            vbox.setVisible(false);
+            vboxBut.setVisible(true);
+            List<Problem> problemas = database.getProblems();
+            textoProblema.setText(problemas.get(7).getText());
+            a.setText(problemas.get(7).getAnswers().get(0).getText());
+            b.setText(problemas.get(7).getAnswers().get(1).getText());
+            c.setText(problemas.get(7).getAnswers().get(2).getText());
+            d.setText(problemas.get(7).getAnswers().get(3).getText());
+        }else {
+            problemaInt = -1;
+            // Quitar problema:
+            vbox.setVisible(true);
+            vboxBut.setVisible(false);
+        }
     }
 
     @FXML
     private void probNueve(ActionEvent event) {
+            a.getStyleClass().removeAll("botonRojo");
+            b.getStyleClass().removeAll("botonRojo");
+            c.getStyleClass().removeAll("botonRojo");
+            d.getStyleClass().removeAll("botonRojo");
+            a.getStyleClass().removeAll("botonVerde");
+            b.getStyleClass().removeAll("botonVerde");
+            c.getStyleClass().removeAll("botonVerde");
+            d.getStyleClass().removeAll("botonVerde");
+            b.setDisable(false);
+            c.setDisable(false);
+            a.setDisable(false);
+            d.setDisable(false);
         if(problemaInt != 9){
-            problemas = database.getProblems();
-            problema = problemas.get(9);
             problemaInt = 9;
-        }else {problemaInt = -1;}
+            // Agregar problema:
+            vbox.setVisible(false);
+            vboxBut.setVisible(true);
+            List<Problem> problemas = database.getProblems();
+            textoProblema.setText(problemas.get(8).getText());
+            a.setText(problemas.get(8).getAnswers().get(0).getText());
+            b.setText(problemas.get(8).getAnswers().get(1).getText());
+            c.setText(problemas.get(8).getAnswers().get(2).getText());
+            d.setText(problemas.get(8).getAnswers().get(3).getText());
+        }else {
+            problemaInt = -1;
+            // Quitar problema:
+            vbox.setVisible(true);
+            vboxBut.setVisible(false);
+        }
     }
 
     @FXML
     private void probDiez(ActionEvent event) {
+            a.getStyleClass().removeAll("botonRojo");
+            b.getStyleClass().removeAll("botonRojo");
+            c.getStyleClass().removeAll("botonRojo");
+            d.getStyleClass().removeAll("botonRojo");
+            a.getStyleClass().removeAll("botonVerde");
+            b.getStyleClass().removeAll("botonVerde");
+            c.getStyleClass().removeAll("botonVerde");
+            d.getStyleClass().removeAll("botonVerde");
+            b.setDisable(false);
+            c.setDisable(false);
+            a.setDisable(false);
+            d.setDisable(false);
         if(problemaInt != 10){
-            problemas = database.getProblems();
-            problema = problemas.get(10);
             problemaInt = 10;
-        }else {problemaInt = -1;}
+            // Agregar problema:
+            vbox.setVisible(false);
+            vboxBut.setVisible(true);
+            List<Problem> problemas = database.getProblems();
+            textoProblema.setText(problemas.get(9).getText());
+            a.setText(problemas.get(9).getAnswers().get(0).getText());
+            b.setText(problemas.get(9).getAnswers().get(1).getText());
+            c.setText(problemas.get(9).getAnswers().get(2).getText());
+            d.setText(problemas.get(9).getAnswers().get(3).getText());
+        }else {
+            problemaInt = -1;
+            // Quitar problema:
+            vbox.setVisible(true);
+            vboxBut.setVisible(false);
+        }
     }
 
     @FXML
     private void probOnce(ActionEvent event) {
+            a.getStyleClass().removeAll("botonRojo");
+            b.getStyleClass().removeAll("botonRojo");
+            c.getStyleClass().removeAll("botonRojo");
+            d.getStyleClass().removeAll("botonRojo");
+            a.getStyleClass().removeAll("botonVerde");
+            b.getStyleClass().removeAll("botonVerde");
+            c.getStyleClass().removeAll("botonVerde");
+            d.getStyleClass().removeAll("botonVerde");
+            b.setDisable(false);
+            c.setDisable(false);
+            a.setDisable(false);
+            d.setDisable(false);
         if(problemaInt != 11){
-            problemas = database.getProblems();
-            problema = problemas.get(11);
             problemaInt = 11;
-        }else {problemaInt = -1;}
+            // Agregar problema:
+            vbox.setVisible(false);
+            vboxBut.setVisible(true);
+            List<Problem> problemas = database.getProblems();
+            textoProblema.setText(problemas.get(10).getText());
+            a.setText(problemas.get(10).getAnswers().get(0).getText());
+            b.setText(problemas.get(10).getAnswers().get(1).getText());
+            c.setText(problemas.get(10).getAnswers().get(2).getText());
+            d.setText(problemas.get(10).getAnswers().get(3).getText());
+        }else {
+            problemaInt = -1;
+            // Quitar problema:
+            vbox.setVisible(true);
+            vboxBut.setVisible(false);
+        }
     }
 
     @FXML
     private void probDoce(ActionEvent event) {
+            a.getStyleClass().removeAll("botonRojo");
+            b.getStyleClass().removeAll("botonRojo");
+            c.getStyleClass().removeAll("botonRojo");
+            d.getStyleClass().removeAll("botonRojo");
+            a.getStyleClass().removeAll("botonVerde");
+            b.getStyleClass().removeAll("botonVerde");
+            c.getStyleClass().removeAll("botonVerde");
+            d.getStyleClass().removeAll("botonVerde");
+            b.setDisable(false);
+            c.setDisable(false);
+            a.setDisable(false);
+            d.setDisable(false);
         if(problemaInt != 12){
-            problemas = database.getProblems();
-            problema = problemas.get(12);
             problemaInt = 12;
-        }else {problemaInt = -1;}
+            // Agregar problema:
+            vbox.setVisible(false);
+            vboxBut.setVisible(true);
+            List<Problem> problemas = database.getProblems();
+            textoProblema.setText(problemas.get(11).getText());
+            a.setText(problemas.get(11).getAnswers().get(0).getText());
+            b.setText(problemas.get(11).getAnswers().get(1).getText());
+            c.setText(problemas.get(11).getAnswers().get(2).getText());
+            d.setText(problemas.get(11).getAnswers().get(3).getText());
+        }else {
+            problemaInt = -1;
+            // Quitar problema:
+            vbox.setVisible(true);
+            vboxBut.setVisible(false);
+        }
     }
 
     @FXML
     private void probTrece(ActionEvent event) {
+            a.getStyleClass().removeAll("botonRojo");
+            b.getStyleClass().removeAll("botonRojo");
+            c.getStyleClass().removeAll("botonRojo");
+            d.getStyleClass().removeAll("botonRojo");
+            a.getStyleClass().removeAll("botonVerde");
+            b.getStyleClass().removeAll("botonVerde");
+            c.getStyleClass().removeAll("botonVerde");
+            d.getStyleClass().removeAll("botonVerde");
+            b.setDisable(false);
+            c.setDisable(false);
+            a.setDisable(false);
+            d.setDisable(false);
         if(problemaInt != 13){
-            problemas = database.getProblems();
-            problema = problemas.get(13);
             problemaInt = 13;
-        }else {problemaInt = -1;}
+            // Agregar problema:
+            vbox.setVisible(false);
+            vboxBut.setVisible(true);
+            List<Problem> problemas = database.getProblems();
+            textoProblema.setText(problemas.get(12).getText());
+            a.setText(problemas.get(12).getAnswers().get(0).getText());
+            b.setText(problemas.get(12).getAnswers().get(1).getText());
+            c.setText(problemas.get(12).getAnswers().get(2).getText());
+            d.setText(problemas.get(12).getAnswers().get(3).getText());
+        }else {
+            problemaInt = -1;
+            // Quitar problema:
+            vbox.setVisible(true);
+            vboxBut.setVisible(false);
+        }
     }
 
     @FXML
     private void probCatorce(ActionEvent event) {
+            a.getStyleClass().removeAll("botonRojo");
+            b.getStyleClass().removeAll("botonRojo");
+            c.getStyleClass().removeAll("botonRojo");
+            d.getStyleClass().removeAll("botonRojo");
+            a.getStyleClass().removeAll("botonVerde");
+            b.getStyleClass().removeAll("botonVerde");
+            c.getStyleClass().removeAll("botonVerde");
+            d.getStyleClass().removeAll("botonVerde");
+            b.setDisable(false);
+            c.setDisable(false);
+            a.setDisable(false);
+            d.setDisable(false);
         if(problemaInt != 14){
-            problemas = database.getProblems();
-            problema = problemas.get(14);
             problemaInt = 14;
-        }else {problemaInt = -1;}
+            // Agregar problema:
+            vbox.setVisible(false);
+            vboxBut.setVisible(true);
+            List<Problem> problemas = database.getProblems();
+            textoProblema.setText(problemas.get(13).getText());
+            a.setText(problemas.get(13).getAnswers().get(0).getText());
+            b.setText(problemas.get(13).getAnswers().get(1).getText());
+            c.setText(problemas.get(13).getAnswers().get(2).getText());
+            d.setText(problemas.get(13).getAnswers().get(3).getText());
+        }else {
+            problemaInt = -1;
+            // Quitar problema:
+            vbox.setVisible(true);
+            vboxBut.setVisible(false);
+        }
     }
 
     @FXML
     private void probQuince(ActionEvent event) {
+            a.getStyleClass().removeAll("botonRojo");
+            b.getStyleClass().removeAll("botonRojo");
+            c.getStyleClass().removeAll("botonRojo");
+            d.getStyleClass().removeAll("botonRojo");
+            a.getStyleClass().removeAll("botonVerde");
+            b.getStyleClass().removeAll("botonVerde");
+            c.getStyleClass().removeAll("botonVerde");
+            d.getStyleClass().removeAll("botonVerde");
+            b.setDisable(false);
+            c.setDisable(false);
+            a.setDisable(false);
+            d.setDisable(false);
         if(problemaInt != 15){
-            problemas = database.getProblems();
-            problema = problemas.get(15);
             problemaInt = 15;
-        }else {problemaInt = -1;}
+            // Agregar problema:
+            vbox.setVisible(false);
+            vboxBut.setVisible(true);
+            List<Problem> problemas = database.getProblems();
+            textoProblema.setText(problemas.get(14).getText());
+            a.setText(problemas.get(14).getAnswers().get(0).getText());
+            b.setText(problemas.get(14).getAnswers().get(1).getText());
+            c.setText(problemas.get(14).getAnswers().get(2).getText());
+            d.setText(problemas.get(14).getAnswers().get(3).getText());
+        }else {
+            problemaInt = -1;
+            // Quitar problema:
+            vbox.setVisible(true);
+            vboxBut.setVisible(false);
+        }
     }
 
     @FXML
     private void probDieciseis(ActionEvent event) {
+            a.getStyleClass().removeAll("botonRojo");
+            b.getStyleClass().removeAll("botonRojo");
+            c.getStyleClass().removeAll("botonRojo");
+            d.getStyleClass().removeAll("botonRojo");
+            a.getStyleClass().removeAll("botonVerde");
+            b.getStyleClass().removeAll("botonVerde");
+            c.getStyleClass().removeAll("botonVerde");
+            d.getStyleClass().removeAll("botonVerde");
+            b.setDisable(false);
+            c.setDisable(false);
+            a.setDisable(false);
+            d.setDisable(false);
         if(problemaInt != 16){
-            problemas = database.getProblems();
-            problema = problemas.get(16);
             problemaInt = 16;
-        }else {problemaInt = -1;}
+            // Agregar problema:
+            vbox.setVisible(false);
+            vboxBut.setVisible(true);
+            List<Problem> problemas = database.getProblems();
+            textoProblema.setText(problemas.get(15).getText());
+            a.setText(problemas.get(15).getAnswers().get(0).getText());
+            b.setText(problemas.get(15).getAnswers().get(1).getText());
+            c.setText(problemas.get(15).getAnswers().get(2).getText());
+            d.setText(problemas.get(15).getAnswers().get(3).getText());
+        }else {
+            problemaInt = -1;
+            // Quitar problema:
+            vbox.setVisible(true);
+            vboxBut.setVisible(false);
+        }
     }
 
     @FXML
     private void probDiecisiete(ActionEvent event) {
+            a.getStyleClass().removeAll("botonRojo");
+            b.getStyleClass().removeAll("botonRojo");
+            c.getStyleClass().removeAll("botonRojo");
+            d.getStyleClass().removeAll("botonRojo");
+            a.getStyleClass().removeAll("botonVerde");
+            b.getStyleClass().removeAll("botonVerde");
+            c.getStyleClass().removeAll("botonVerde");
+            d.getStyleClass().removeAll("botonVerde");
+            b.setDisable(false);
+            c.setDisable(false);
+            a.setDisable(false);
+            d.setDisable(false);
         if(problemaInt != 17){
-            problemas = database.getProblems();
-            problema = problemas.get(17);
             problemaInt = 17;
-        }else {problemaInt = -1;}
+            // Agregar problema:
+            vbox.setVisible(false);
+            vboxBut.setVisible(true);
+            List<Problem> problemas = database.getProblems();
+            textoProblema.setText(problemas.get(16).getText());
+            a.setText(problemas.get(16).getAnswers().get(0).getText());
+            b.setText(problemas.get(16).getAnswers().get(1).getText());
+            c.setText(problemas.get(16).getAnswers().get(2).getText());
+            d.setText(problemas.get(16).getAnswers().get(3).getText());
+        }else {
+            problemaInt = -1;
+            // Quitar problema:
+            vbox.setVisible(true);
+            vboxBut.setVisible(false);
+        }
     }
 
     @FXML
     private void probDieciocho(ActionEvent event) {
+            a.getStyleClass().removeAll("botonRojo");
+            b.getStyleClass().removeAll("botonRojo");
+            c.getStyleClass().removeAll("botonRojo");
+            d.getStyleClass().removeAll("botonRojo");
+            a.getStyleClass().removeAll("botonVerde");
+            b.getStyleClass().removeAll("botonVerde");
+            c.getStyleClass().removeAll("botonVerde");
+            d.getStyleClass().removeAll("botonVerde");
+            b.setDisable(false);
+            c.setDisable(false);
+            a.setDisable(false);
+            d.setDisable(false);
         if(problemaInt != 18){
-            problemas = database.getProblems();
-            problema = problemas.get(18);
             problemaInt = 18;
-        }else {problemaInt = -1;}
+            // Agregar problema:
+            vbox.setVisible(false);
+            vboxBut.setVisible(true);
+            List<Problem> problemas = database.getProblems();
+            textoProblema.setText(problemas.get(17).getText());
+            a.setText(problemas.get(17).getAnswers().get(0).getText());
+            b.setText(problemas.get(17).getAnswers().get(1).getText());
+            c.setText(problemas.get(17).getAnswers().get(2).getText());
+            d.setText(problemas.get(17).getAnswers().get(3).getText());
+        }else {
+            problemaInt = -1;
+            // Quitar problema:
+            vbox.setVisible(true);
+            vboxBut.setVisible(false);
+        }
     }
 
-    
-    
-    
+    @FXML
+    private void clickA(ActionEvent event) {
+        List<Problem> problemas = database.getProblems();
+        if(problemas.get(problemaInt-1).getAnswers().get(0).getValidity()){
+            aciertos++;
+            a.getStyleClass().add("botonVerde");
+            b.setDisable(true);
+            c.setDisable(true);
+            d.setDisable(true);
+        }else{
+            fallos++;
+            a.getStyleClass().add("botonRojo");
+            b.setDisable(true);
+            c.setDisable(true);
+            d.setDisable(true);
+        }
+    }
+
+    @FXML
+    private void clickB(ActionEvent event) {
+        List<Problem> problemas = database.getProblems();
+        if(problemas.get(problemaInt-1).getAnswers().get(1).getValidity()){
+            aciertos++;
+            b.getStyleClass().add("botonVerde");
+            a.setDisable(true);
+            c.setDisable(true);
+            d.setDisable(true);
+        }else{
+            fallos++;
+            b.getStyleClass().add("botonRojo");
+            a.setDisable(true);
+            c.setDisable(true);
+            d.setDisable(true);
+        }
+    }
+
+    @FXML
+    private void clickC(ActionEvent event) {
+        List<Problem> problemas = database.getProblems();
+        if(problemas.get(problemaInt-1).getAnswers().get(2).getValidity()){
+            aciertos++;
+            c.getStyleClass().add("botonVerde");
+            b.setDisable(true);
+            a.setDisable(true);
+            d.setDisable(true);
+        }else{
+            fallos++;
+            c.getStyleClass().add("botonRojo");
+            b.setDisable(true);
+            a.setDisable(true);
+            d.setDisable(true);
+        }
+    }
+
+    @FXML
+    private void clickD(ActionEvent event) {
+        List<Problem> problemas = database.getProblems();
+        if(problemas.get(problemaInt-1).getAnswers().get(3).getValidity()){
+            aciertos++;
+            d.getStyleClass().add("botonVerde");
+            b.setDisable(true);
+            c.setDisable(true);
+            a.setDisable(true);
+        }else{
+            fallos++;
+            d.getStyleClass().add("botonRojo");
+            b.setDisable(true);
+            c.setDisable(true);
+            a.setDisable(true);
+        }
+    }
 }
