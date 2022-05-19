@@ -97,10 +97,6 @@ public class FXMLModifPerfilController implements Initializable {
         usuario = usuari;
     }
     
-    public void dataInit(Navegacion data){
-        database = data;
-    }
-    
     @FXML
     private void atras(ActionEvent event) {
         ((Stage)correo.getScene().getWindow()).close();

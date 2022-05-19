@@ -11,6 +11,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -189,10 +190,6 @@ public class FXMLDocumentController implements Initializable {
         usuario = usuari;
     }
     
-    public void dataInit(Navegacion data){
-        database = data;
-    }
-    
     @Override
     public void initialize(URL url, ResourceBundle rb){
         try {    
@@ -229,22 +226,30 @@ public class FXMLDocumentController implements Initializable {
     }
 
     @FXML
-    private void cerrarAplicacion(ActionEvent event) {
-       // usuario.addSession(sesion);
+    private void cerrarAplicacion(ActionEvent event) throws NavegacionDAOException {
+        usuario.addSession(new Session(LocalDateTime.now(), aciertos, fallos));
         ((Stage)zoom_slider.getScene().getWindow()).close();
     }
 
     @FXML
-    private void mostrarResults(ActionEvent event) {
-        Alert mensaje= new Alert(Alert.AlertType.INFORMATION);
-        mensaje.setTitle("Acerca de");
-        mensaje.setHeaderText("NavMap - 2022");
-        mensaje.showAndWait();
+    private void mostrarResults(ActionEvent event) throws IOException {
+//        Alert mensaje= new Alert(Alert.AlertType.INFORMATION);
+//        mensaje.setTitle("Acerca de");
+//        mensaje.setHeaderText("NavMap - 2022");
+//        mensaje.showAndWait();
+        FXMLLoader results = new FXMLLoader(getClass().getResource("/navmap/run/FXMLEvolucion.fxml"));
+        Parent root = results.load();
+        Scene scene = new Scene(root);
+        Stage stage = new Stage();
+        stage.setTitle("Evolución");
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(scene);
+        stage.show();
     }
 
     @FXML
-    private void cerrarSesión(ActionEvent event) throws IOException {
-       // usuario.addSession(sesion);
+    private void cerrarSesión(ActionEvent event) throws IOException, NavegacionDAOException {
+        usuario.addSession(new Session(LocalDateTime.now(), aciertos, fallos));
         FXMLLoader registrarse = new FXMLLoader(getClass().getResource("/navmap/run/FXMLLog.fxml"));
         Parent root = registrarse.load();
         Scene scene = new Scene(root);
@@ -264,7 +269,6 @@ public class FXMLDocumentController implements Initializable {
         // Paso de parámetros:
         FXMLModifPerfilController modController = modif.getController();
         modController.userInit(usuario);
-        modController.dataInit(database);
         //
         
         
@@ -314,7 +318,6 @@ public class FXMLDocumentController implements Initializable {
         baseY2 = regla.getTranslateY();
         event.consume ();
     }
-
     
     @FXML
     private void transportadorVisible(ActionEvent event) {
