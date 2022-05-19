@@ -239,11 +239,16 @@ public class FXMLDocumentController implements Initializable {
 //        mensaje.showAndWait();
         FXMLLoader results = new FXMLLoader(getClass().getResource("/navmap/run/FXMLEvolucion.fxml"));
         Parent root = results.load();
+        // Paso de parámetros:
+            FXMLDocumentController evController = results.getController();
+            evController.userInit(usuario);
+        //
         Scene scene = new Scene(root);
         Stage stage = new Stage();
         stage.setTitle("Evolución");
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(scene);
+//        evController.user.setText(usuario.getNickName());
         stage.show();
     }
 
@@ -648,7 +653,6 @@ public class FXMLDocumentController implements Initializable {
             herramientaActual.setImage(herramientaUso);
         }
     }
-    
     
     @FXML
     private void compasVisible(ActionEvent event) throws FileNotFoundException {
