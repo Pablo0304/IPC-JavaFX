@@ -79,6 +79,7 @@ public class FXMLDocumentController implements Initializable {
     private boolean setGoma = false;
     private boolean setCompas = false;
     private boolean setAnota = false;
+    boolean coordenadasCheck = false;
     Color color = Color.BLACK;
     int grosor = 3;
     double circuloX;
@@ -93,6 +94,7 @@ public class FXMLDocumentController implements Initializable {
     private double baseY2;
     Line linePainting;
     Circle circlePainting;
+    Circle coordenada;
     Circle circlePaintingPoint;
     Circle circlePaintingPoint2;
     Session sesion;
@@ -150,6 +152,8 @@ public class FXMLDocumentController implements Initializable {
     private VBox vbox;
     @FXML
     private VBox vboxBut;
+    @FXML
+    private ImageView carta;
     
     
     @FXML
@@ -240,15 +244,15 @@ public class FXMLDocumentController implements Initializable {
         FXMLLoader results = new FXMLLoader(getClass().getResource("/navmap/run/FXMLEvolucion.fxml"));
         Parent root = results.load();
         // Paso de parámetros:
-            FXMLDocumentController evController = results.getController();
+            FXMLEvolucionController evController = results.getController();
             evController.userInit(usuario);
+//        evController.user.setText(usuario.getNickName());
         //
         Scene scene = new Scene(root);
         Stage stage = new Stage();
         stage.setTitle("Evolución");
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(scene);
-//        evController.user.setText(usuario.getNickName());
         stage.show();
     }
 
@@ -364,6 +368,7 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void lineai(MouseEvent event) {
+        user.setText(String.valueOf(setRLapiz));
         if(setRLapiz == true || setCLapiz == true){
             linePainting = new Line(event.getX(), event.getY(), event.getX(), event.getY());
             linePainting.setStroke(color);
@@ -422,12 +427,40 @@ public class FXMLDocumentController implements Initializable {
             //
         }
         
+        // Latitud y Longitud:
+        if(coordenadasCheck){
+            this.mapaPanel.setOnContextMenuRequested(e->{
+                ContextMenu menuContext = new ContextMenu();
+                MenuItem coordenadas = new MenuItem("Coordenadas");
+                if(coordenadasCheck){menuContext.getItems().add(coordenadas);}
+                coordenadas.setOnAction(ev -> {
+                    coordenada = new Circle(1);
+                    coordenada.setStroke(Color.BLACK);
+                    coordenada.setStrokeWidth(10);
+                    zoomGroup.getChildren().add(coordenada);
+                    coordenada.setCenterX(event.getX());
+                    coordenada.setCenterY(event.getY());
+                    Line coordenadaX = new Line(event.getX(), event.getY(), 0, event.getY());
+                    Line coordenadaY = new Line(event.getX(), event.getY(), event.getX(), 0);
+                    coordenadaX.setStrokeWidth(3);
+                    coordenadaY.setStrokeWidth(3);
+                    zoomGroup.getChildren().add(coordenadaX);
+                    zoomGroup.getChildren().add(coordenadaY);
+                    ev.consume();
+                });
+                menuContext.show(
+                mapaPanel, e.getScreenX(), e.getScreenY());
+                e.consume();
+            });
+        }
+        //
+            
         
         if(setRLapiz){
         // Borrar Línea:
         this.linePainting.setOnContextMenuRequested(e -> {
             ContextMenu menuContext = new ContextMenu();
-            MenuItem borrarItem = new MenuItem("eliminar");
+            MenuItem borrarItem = new MenuItem("Eliminar");
             menuContext.getItems().add(borrarItem);
             borrarItem.setOnAction(ev -> {
                 zoomGroup.getChildren().remove((Node)e.getSource());
@@ -652,6 +685,13 @@ public class FXMLDocumentController implements Initializable {
             Image herramientaUso = new Image(new FileInputStream(".\\src\\resources\\anota.jpg"));
             herramientaActual.setImage(herramientaUso);
         }
+    }
+    
+    @FXML
+    private void coordenadas(ActionEvent event) {
+        if(coordenadasCheck){
+            coordenadasCheck = false;
+        } else{coordenadasCheck = true;}
     }
     
     @FXML
@@ -1434,4 +1474,5 @@ public class FXMLDocumentController implements Initializable {
             a.setDisable(true);
         }
     }
+
 }

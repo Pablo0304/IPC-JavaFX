@@ -1,4 +1,5 @@
-1.- 
+1.- Para abrir correctamente el proyecto:
+Es necesario añadir a las librerías del proyecto los .jar que se encuentran en el path "/lib" en la raíz del mismo.
 
 2.- Cosas a tener en cuenta:
 Pusimos gifs animados para el avatar pero el usuario no soportaba esa extensión.

@@ -12,10 +12,10 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
@@ -87,6 +87,7 @@
                           <items>
                               <CheckMenuItem fx:id="lapizRCheck" mnemonicParsing="false" onAction="#lapizRVisible" text="Línea Recta Contínua" />
                               <CheckMenuItem fx:id="lapizCCheck" mnemonicParsing="false" onAction="#lapizCVisible" text="Línea Curva Discontínua" />
+                              <CheckMenuItem mnemonicParsing="false" onAction="#coordenadas" text="Coordenadas(click derecho)" />
                           </items>
                         </Menu>
                         <CheckMenuItem fx:id="anotaCheck" mnemonicParsing="false" onAction="#anotaVisible" text="Anotación" />
@@ -125,65 +126,63 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </VBox.margin>
       </HBox>
-      <SplitPane dividerPositions="0.5678466076696165" VBox.vgrow="ALWAYS">
+      <SplitPane dividerPositions="0.41150442477876104" VBox.vgrow="ALWAYS">
          <items>
-            <ScrollPane prefHeight="398.0" prefWidth="288.0">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="375.0" prefWidth="370.0">
+            <StackPane prefHeight="150.0" prefWidth="200.0">
+               <children>
+                  <VBox fx:id="vboxBut" alignment="CENTER" prefHeight="402.0" prefWidth="334.0" visible="false">
                      <children>
-                        <VBox fx:id="vbox" alignment="CENTER" layoutY="-21.0" prefHeight="379.0" prefWidth="371.0">
+                        <Text fx:id="textoProblema" strokeType="OUTSIDE" strokeWidth="0.0" text="Hola este es el pjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj jjjjjjjjjjjjjjjjjjjjjjjjjjjroblema uno un problema un pronlema un problema un problema un problema un problema" wrappingWidth="383.13671875">
+                           <VBox.margin>
+                              <Insets left="10.0" top="30.0" />
+                           </VBox.margin>
+                        </Text>
+                        <HBox alignment="CENTER" prefHeight="50.0" prefWidth="290.0">
                            <children>
-                              <ImageView fitHeight="334.0" fitWidth="368.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../resources/Logo2.png" />
-                                 </image></ImageView>
-                           </children></VBox>
-                        <VBox fx:id="vboxBut" prefHeight="364.0" prefWidth="371.0" visible="false">
-                           <children>
-                              <Text fx:id="textoProblema" strokeType="OUTSIDE" strokeWidth="0.0" text="Hola este es el pjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj jjjjjjjjjjjjjjjjjjjjjjjjjjjroblema uno un problema un pronlema un problema un problema un problema un problema" wrappingWidth="171.13671875">
-                                 <VBox.margin>
-                                    <Insets left="100.0" top="30.0" />
-                                 </VBox.margin>
-                              </Text>
-                              <HBox prefHeight="50.0" prefWidth="290.0">
-                                 <children>
-                                    <Button fx:id="a" mnemonicParsing="false" onAction="#clickA" prefHeight="40.0" prefWidth="140.0" text="Button">
-                                       <HBox.margin>
-                                          <Insets left="10.0" right="50.0" />
-                                       </HBox.margin>
-                                    </Button>
-                                    <Button fx:id="b" mnemonicParsing="false" onAction="#clickB" prefHeight="40.0" prefWidth="140.0" text="Button" />
-                                 </children>
-                                 <VBox.margin>
-                                    <Insets bottom="30.0" left="10.0" top="30.0" />
-                                 </VBox.margin>
-                              </HBox>
-                              <HBox prefHeight="100.0" prefWidth="200.0">
-                                 <children>
-                                    <Button fx:id="c" mnemonicParsing="false" onAction="#clickC" prefHeight="40.0" prefWidth="140.0" text="Button">
-                                       <HBox.margin>
-                                          <Insets left="10.0" right="50.0" />
-                                       </HBox.margin>
-                                    </Button>
-                                    <Button fx:id="d" mnemonicParsing="false" onAction="#clickD" prefHeight="40.0" prefWidth="140.0" text="Button" />
-                                 </children>
-                                 <VBox.margin>
+                              <Button fx:id="a" mnemonicParsing="false" onAction="#clickA" prefHeight="40.0" prefWidth="140.0" text="Button">
+                                 <HBox.margin>
                                     <Insets left="10.0" />
-                                 </VBox.margin>
-                              </HBox>
+                                 </HBox.margin>
+                              </Button>
+                              <HBox prefHeight="100.0" prefWidth="200.0" />
+                              <Button fx:id="b" mnemonicParsing="false" onAction="#clickB" prefHeight="40.0" prefWidth="140.0" text="Button" />
                            </children>
-                        </VBox>
-                     </children></AnchorPane>
-              </content>
-               <padding>
-                  <Insets top="20.0" />
-               </padding>
-            </ScrollPane>
+                           <VBox.margin>
+                              <Insets bottom="30.0" left="10.0" top="30.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Button fx:id="c" mnemonicParsing="false" onAction="#clickC" prefHeight="40.0" prefWidth="140.0" text="Button">
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                              </Button>
+                              <HBox prefHeight="100.0" prefWidth="200.0" />
+                              <Button fx:id="d" mnemonicParsing="false" onAction="#clickD" prefHeight="40.0" prefWidth="140.0" text="Button" />
+                           </children>
+                           <VBox.margin>
+                              <Insets left="10.0" />
+                           </VBox.margin>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <VBox fx:id="vbox" alignment="CENTER" prefHeight="379.0" prefWidth="371.0">
+                     <children>
+                        <ImageView fitHeight="334.0" fitWidth="368.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../resources/Logo2.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </VBox>
+               </children>
+            </StackPane>
             <ScrollPane fx:id="map_scrollpane" hbarPolicy="ALWAYS" onMouseMoved="#muestraPosicion" pannable="true" prefHeight="398.0" prefWidth="358.0" vbarPolicy="ALWAYS">
                <content>
                   <Pane fx:id="mapaPanel">
                      <children>
-                        <ImageView fitHeight="5800.0" fitWidth="9002.0" onMouseDragged="#lineaf" onMousePressed="#lineai" onMouseReleased="#soltarLinea" pickOnBounds="true">
+                        <ImageView fx:id="carta" fitHeight="5800.0" fitWidth="9002.0" onMouseDragged="#lineaf" onMousePressed="#lineai" onMouseReleased="#soltarLinea" pickOnBounds="true">
                            <image>
                               <Image url="@../../resources/carta_nautica.jpg" />
                            </image>
