@@ -227,6 +227,8 @@
             <HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="349.0">
                <children>
                   <Label fx:id="user" prefHeight="17.0" prefWidth="90.0" />
+                  <Label fx:id="aciertosLab" prefHeight="17.0" prefWidth="71.0" text="Aciertos: 0" />
+                  <Label fx:id="fallosLab" prefHeight="17.0" prefWidth="61.0" text="Fallos: 0" />
                </children>
                <HBox.margin>
                   <Insets left="15.0" />

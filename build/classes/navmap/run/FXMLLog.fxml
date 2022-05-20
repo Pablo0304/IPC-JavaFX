@@ -15,7 +15,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="422.0" prefWidth="588.0" styleClass="fondoInterfaz" stylesheets="@../../resources/estilos.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="navmap.controller.FXMLLogController">
    <top>
-      <VBox fx:id="top" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="134.0" minWidth="594.0" prefHeight="182.0" prefWidth="594.0" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="134.0" minWidth="594.0" prefHeight="182.0" prefWidth="594.0" BorderPane.alignment="CENTER">
          <children>
             <HBox alignment="CENTER" prefHeight="168.0" prefWidth="554.0">
                <children>

@@ -12,7 +12,6 @@ import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
@@ -38,13 +37,11 @@ import model.User;
 
 /**
  * FXML Controller class
- *
- * @author gonca
+ * @author Pablo Gonzálbez Cabo
+ * @author Jose Marco
  */
 public class FXMLModifPerfilController implements Initializable {
 
-    @FXML
-    private Pane panelImagen1;
     @FXML
     private PasswordField psswReg;
     @FXML

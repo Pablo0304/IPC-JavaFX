@@ -1,11 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="navmap.controller.FXMLEvolucionController">
-    
-</AnchorPane>
+<VBox fx:id="principal" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="346.0" prefWidth="195.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="navmap.controller.FXMLEvolucionController">
+   <children>
+      <Pane prefHeight="90.0" prefWidth="115.0">
+         <VBox.margin>
+            <Insets bottom="5.0" left="40.0" right="40.0" top="10.0" />
+         </VBox.margin>
+         <children>
+            <ImageView fitHeight="90.0" fitWidth="115.0" layoutX="13.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../resources/Logo2.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="NavMap" textAlignment="CENTER" wrappingWidth="60.49609375">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Evolución">
+         <font>
+            <Font size="21.0" />
+         </font>
+      </Text>
+      <Label prefHeight="17.0" prefWidth="174.0" text="Desde:">
+         <VBox.margin>
+            <Insets top="20.0" />
+         </VBox.margin>
+      </Label>
+      <DatePicker fx:id="fecha" editable="false" onAction="#fechas">
+         <VBox.margin>
+            <Insets bottom="15.0" />
+         </VBox.margin>
+      </DatePicker>
+      <Label prefHeight="17.0" prefWidth="174.0" text="Aciertos:" />
+      <TextField fx:id="aciertoText" editable="false" prefHeight="25.0" prefWidth="175.0" style="-fx-background-color: gainsboro;">
+         <VBox.margin>
+            <Insets left="9.0" right="12.0" />
+         </VBox.margin>
+      </TextField>
+      <Label prefHeight="17.0" prefWidth="174.0" text="Fallos:" />
+      <TextField fx:id="falloText" editable="false" style="-fx-background-color: gainsboro;">
+         <VBox.margin>
+            <Insets left="9.0" right="12.0" />
+         </VBox.margin>
+      </TextField>
+   </children>
+</VBox>

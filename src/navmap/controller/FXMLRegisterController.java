@@ -12,42 +12,34 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import static javafx.scene.input.KeyCode.C;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import java.time.LocalDate;
-import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javax.imageio.ImageIO;
 import model.Navegacion;
 import model.User;
 
 /**
  * FXML Controller class
- *
- * @author gonca
+ * @author Pablo Gonzálbez Cabo
+ * @author Jose Marco
  */
 public class FXMLRegisterController implements Initializable {
 
@@ -59,8 +51,6 @@ public class FXMLRegisterController implements Initializable {
     private DatePicker fecha;
     @FXML
     private ImageView imagen;
-    @FXML
-    private Pane panelImagen;
     @FXML
     private PasswordField psswReg;
     @FXML

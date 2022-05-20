@@ -75,7 +75,7 @@
             </VBox>
             <HBox alignment="CENTER" prefHeight="49.0" prefWidth="587.0">
                <children>
-                  <Pane fx:id="panelImagen" prefHeight="74.0" prefWidth="114.0">
+                  <Pane prefHeight="74.0" prefWidth="114.0">
                      <children>
                         <ImageView fx:id="imagen" fitHeight="70.0" fitWidth="95.0" layoutX="22.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
                            <image>

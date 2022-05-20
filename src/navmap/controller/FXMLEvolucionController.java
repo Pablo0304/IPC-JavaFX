@@ -5,17 +5,20 @@
 package navmap.controller;
 
 import java.net.URL;
-import java.time.LocalDateTime;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import model.Navegacion;
-import model.Session;
 import model.User;
 
 /**
  * FXML Controller class
- *
- * @author gonca
+ * @author Pablo Gonzálbez Cabo
+ * @author Jose Marco
  */
 public class FXMLEvolucionController implements Initializable {
 
@@ -23,6 +26,14 @@ public class FXMLEvolucionController implements Initializable {
     Navegacion database;
     int acierto = 0;
     int fallo = 0;
+    @FXML
+    private VBox principal;
+    @FXML
+    private TextField aciertoText;
+    @FXML
+    private TextField falloText;
+    @FXML
+    private DatePicker fecha;
     /**
      * Initializes the controller class.
      */
@@ -35,11 +46,18 @@ public class FXMLEvolucionController implements Initializable {
         usuario = usuari;
     }
 //    usuario.addSession(new Session(LocalDateTime.now(), aciertos, fallos));
-    public void funciontoguapa(){
-        for(int i = 0; i < usuario.getSessions().size(); i++){
-            acierto += usuario.getSessions().get(i).getHits();
-            fallo += usuario.getSessions().get(i).getFaults();
+    @FXML
+    private void fechas(ActionEvent event) {
+        int i = 0;
+        while(i < usuario.getSessions().size()){
+            if(usuario.getSessions().get(i).getLocalDate().isAfter(fecha.getValue())){
+                acierto += usuario.getSessions().get(i).getHits();
+                fallo += usuario.getSessions().get(i).getFaults();
+            }
+            i++;
         }
+        aciertoText.setText(String.valueOf(acierto));
+        falloText.setText(String.valueOf(fallo));
     }
     
 }

@@ -6,22 +6,16 @@
 package navmap.controller;
 
 import DBAccess.NavegacionDAOException;
-import java.awt.BasicStroke;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -30,17 +24,13 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -53,16 +43,14 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import model.Navegacion;
 import model.Problem;
 import model.Session;
 import model.User;
-import model.Answer;
 
 /**
- *
- * @author jsoler
+ * @author Pablo Gonzálbez
+ * @author Jose Marco
  */
 public class FXMLDocumentController implements Initializable {
 
@@ -70,8 +58,6 @@ public class FXMLDocumentController implements Initializable {
     // la variable zoomGroup se utiliza para dar soporte al zoom
     // el escalado se realiza sobre este nodo, al escalar el Group no mueve sus nodos
     private Group zoomGroup;
-    private int aciertos = 0;
-    private int fallos = 0;
     private boolean setTransportador = false;
     private boolean setRegla = false;
     private boolean setRLapiz = false;
@@ -92,6 +78,8 @@ public class FXMLDocumentController implements Initializable {
     private double inicioYTrans2;
     private double baseX2;
     private double baseY2;
+    private int aciertos = 0;
+    private int fallos = 0;
     Line linePainting;
     Circle circlePainting;
     Circle coordenada;
@@ -154,6 +142,10 @@ public class FXMLDocumentController implements Initializable {
     private VBox vboxBut;
     @FXML
     private ImageView carta;
+    @FXML
+    private Label aciertosLab;
+    @FXML
+    private Label fallosLab;
     
     
     @FXML
@@ -243,6 +235,7 @@ public class FXMLDocumentController implements Initializable {
 //        mensaje.showAndWait();
         FXMLLoader results = new FXMLLoader(getClass().getResource("/navmap/run/FXMLEvolucion.fxml"));
         Parent root = results.load();
+        
         // Paso de parámetros:
             FXMLEvolucionController evController = results.getController();
             evController.userInit(usuario);
@@ -253,6 +246,7 @@ public class FXMLDocumentController implements Initializable {
         stage.setTitle("Evolución");
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 
@@ -368,7 +362,6 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void lineai(MouseEvent event) {
-        user.setText(String.valueOf(setRLapiz));
         if(setRLapiz == true || setCLapiz == true){
             linePainting = new Line(event.getX(), event.getY(), event.getX(), event.getY());
             linePainting.setStroke(color);
@@ -457,18 +450,18 @@ public class FXMLDocumentController implements Initializable {
             
         
         if(setRLapiz){
-        // Borrar Línea:
-        this.linePainting.setOnContextMenuRequested(e -> {
-            ContextMenu menuContext = new ContextMenu();
-            MenuItem borrarItem = new MenuItem("Eliminar");
-            menuContext.getItems().add(borrarItem);
-            borrarItem.setOnAction(ev -> {
-                zoomGroup.getChildren().remove((Node)e.getSource());
-                ev.consume();
-            });if(goma.isVisible()){
-                menuContext.show(
-                linePainting, e.getScreenX(), e.getScreenY());}
-            e.consume();
+            // Borrar Línea:
+            this.linePainting.setOnContextMenuRequested(e -> {
+                ContextMenu menuContext = new ContextMenu();
+                MenuItem borrarItem = new MenuItem("Eliminar");
+                menuContext.getItems().add(borrarItem);
+                borrarItem.setOnAction(ev -> {
+                    zoomGroup.getChildren().remove((Node)e.getSource());
+                    ev.consume();
+                });if(goma.isVisible()){
+                    menuContext.show(
+                    linePainting, e.getScreenX(), e.getScreenY());}
+                e.consume();
         });}
         //
             
@@ -1412,12 +1405,14 @@ public class FXMLDocumentController implements Initializable {
             b.setDisable(true);
             c.setDisable(true);
             d.setDisable(true);
+            aciertosLab.setText("Aciertos: " + aciertos);
         }else{
             fallos++;
             a.getStyleClass().add("botonRojo");
             b.setDisable(true);
             c.setDisable(true);
             d.setDisable(true);
+            fallosLab.setText("Fallos: " + fallos);
         }
     }
 
@@ -1430,12 +1425,14 @@ public class FXMLDocumentController implements Initializable {
             a.setDisable(true);
             c.setDisable(true);
             d.setDisable(true);
+            aciertosLab.setText("Aciertos: " + aciertos);
         }else{
             fallos++;
             b.getStyleClass().add("botonRojo");
             a.setDisable(true);
             c.setDisable(true);
             d.setDisable(true);
+            fallosLab.setText("Fallos: " + fallos);
         }
     }
 
@@ -1448,12 +1445,14 @@ public class FXMLDocumentController implements Initializable {
             b.setDisable(true);
             a.setDisable(true);
             d.setDisable(true);
+            aciertosLab.setText("Aciertos: " + aciertos);
         }else{
             fallos++;
             c.getStyleClass().add("botonRojo");
             b.setDisable(true);
             a.setDisable(true);
             d.setDisable(true);
+            fallosLab.setText("Fallos: " + fallos);
         }
     }
 
@@ -1466,12 +1465,14 @@ public class FXMLDocumentController implements Initializable {
             b.setDisable(true);
             c.setDisable(true);
             a.setDisable(true);
+            aciertosLab.setText("Aciertos: " + aciertos);
         }else{
             fallos++;
             d.getStyleClass().add("botonRojo");
             b.setDisable(true);
             c.setDisable(true);
             a.setDisable(true);
+            fallosLab.setText("Fallos: " + fallos);
         }
     }
 

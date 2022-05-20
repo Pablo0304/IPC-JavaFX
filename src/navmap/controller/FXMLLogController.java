@@ -4,9 +4,7 @@
  */
 package navmap.controller;
 
-import com.sun.javafx.logging.PlatformLogger.Level;
 import java.io.IOException;
-import java.lang.System.Logger;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -17,30 +15,16 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import java.io.File;
-import java.io.FileInputStream;
-import java.time.LocalDate;
-import javafx.scene.Node;
-import javafx.scene.image.Image;
-import javafx.stage.FileChooser;
-import javafx.stage.FileChooser.ExtensionFilter;
-import DBAccess.NavegacionDAO;
-import DBAccess.NavegacionDAOException;
-import static java.lang.Thread.sleep;
 import model.Navegacion;
-import model.Answer;
 import model.User;
-import model.Session;
 
 /**
  * FXML Controller class
- *
- * @author gonca
+ * @author Pablo Gonzálbez Cabo
+ * @author Jose Marco
  */
 public class FXMLLogController implements Initializable {
 
@@ -48,8 +32,6 @@ public class FXMLLogController implements Initializable {
     private TextField user;
     @FXML
     private TextField pssw;
-    @FXML
-    private VBox top;
     @FXML
     private Label errorLogin;
     
