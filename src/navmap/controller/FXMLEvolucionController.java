@@ -49,6 +49,8 @@ public class FXMLEvolucionController implements Initializable {
     @FXML
     private void fechas(ActionEvent event) {
         int i = 0;
+        acierto = 0;
+        fallo = 0;
         while(i < usuario.getSessions().size()){
             if(usuario.getSessions().get(i).getLocalDate().isAfter(fecha.getValue())){
                 acierto += usuario.getSessions().get(i).getHits();

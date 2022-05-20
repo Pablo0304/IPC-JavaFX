@@ -58,7 +58,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <TextField fx:id="user" prefHeight="25.0" prefWidth="455.0" promptText="Usuario" text="Pabloo" />
+                  <TextField fx:id="user" prefHeight="25.0" prefWidth="455.0" promptText="Usuario" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
@@ -68,7 +68,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <PasswordField fx:id="pssw" prefHeight="25.0" prefWidth="456.0" promptText="Contraseña" text="Pp123456!" />
+                  <PasswordField fx:id="pssw" prefHeight="25.0" prefWidth="456.0" promptText="Contraseña" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="76.0" prefWidth="594.0">
