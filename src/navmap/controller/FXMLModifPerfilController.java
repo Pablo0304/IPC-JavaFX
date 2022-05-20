@@ -16,10 +16,13 @@ import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -53,11 +56,13 @@ public class FXMLModifPerfilController implements Initializable {
     @FXML
     private DatePicker fecha;
     @FXML
-    private ImageView imagen;
+    protected ImageView imagen;
+    @FXML
+    protected Label user;
     Navegacion database;
     User usuario;
     @FXML
-    protected Label user;
+    protected Button continuo;
     
     /**
      * Initializes the controller class.
@@ -88,6 +93,7 @@ public class FXMLModifPerfilController implements Initializable {
         });
         
         
+        
     }    
 
     public void userInit(User usuari){
@@ -104,7 +110,6 @@ public class FXMLModifPerfilController implements Initializable {
         String p1 = psswReg.getText();
         String p2 = pssw2Reg.getText();
         String error = "";
-        
         if(usuario.checkPassword(psswReg.getText()) && p1.equals(p2) && usuario.checkEmail(correo.getText())){
             // Actualizar Usuario:
             usuario.setPassword(psswReg.getText());
@@ -142,6 +147,11 @@ public class FXMLModifPerfilController implements Initializable {
             Image avatar = new Image(new FileInputStream(selectedFile));
             imagen.setImage(avatar);
         }
+    }
+
+    @FXML
+    private void continuoo(ActionEvent event) {
+        continuo.setDisable(false);
     }
     
 }

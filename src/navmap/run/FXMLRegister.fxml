@@ -79,13 +79,13 @@
                      <children>
                         <ImageView fx:id="imagen" fitHeight="70.0" fitWidth="95.0" layoutX="22.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../resources/avatares/avatar4.png" />
+                              <Image url="@../../resources/avatares/avatar1.jpg" />
                            </image>
                         </ImageView>
                      </children></Pane>
                   <Button mnemonicParsing="false" onMouseClicked="#cambiarImagen" prefHeight="13.0" prefWidth="69.0" text="Cambiar">
                      <HBox.margin>
-                        <Insets left="10.0" top="46.0" />
+                        <Insets left="-10.0" top="46.0" />
                      </HBox.margin>
                   </Button>
                </children>

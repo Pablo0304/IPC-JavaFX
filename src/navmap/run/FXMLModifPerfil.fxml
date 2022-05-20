@@ -61,7 +61,7 @@
                         <Insets left="50.0" right="50.0" />
                      </VBox.margin>
                   </Label>
-                  <DatePicker fx:id="fecha" editable="false">
+                  <DatePicker fx:id="fecha" editable="false" onAction="#continuoo">
                      <VBox.margin>
                         <Insets left="50.0" right="50.0" />
                      </VBox.margin>
@@ -70,18 +70,18 @@
             </VBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Pane prefHeight="74.0" prefWidth="114.0">
+                  <Pane prefHeight="71.0" prefWidth="122.0">
                      <children>
                         <ImageView fx:id="imagen" fitHeight="73.0" fitWidth="155.0" layoutX="27.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../resources/avatares/avatar4.png" />
+                              <Image url="@../../resources/avatares/avatar1.jpg" />
                            </image>
                         </ImageView>
                      </children>
                   </Pane>
                   <Button mnemonicParsing="false" onMouseClicked="#cambiarImagen" prefHeight="13.0" prefWidth="69.0" text="Cambiar">
                      <HBox.margin>
-                        <Insets left="10.0" top="46.0" />
+                        <Insets left="-10.0" top="46.0" />
                      </HBox.margin>
                   </Button>
                </children>
@@ -104,7 +104,7 @@
                   <Insets left="5.0" right="300.0" />
                </HBox.margin>
             </Button>
-            <Button alignment="CENTER" mnemonicParsing="false" onAction="#continuar" prefHeight="52.0" prefWidth="96.0" text="Continuar">
+            <Button fx:id="continuo" alignment="CENTER" mnemonicParsing="false" onAction="#continuar" prefHeight="52.0" prefWidth="96.0" text="Continuar">
                <HBox.margin>
                   <Insets right="5.0" />
                </HBox.margin></Button>

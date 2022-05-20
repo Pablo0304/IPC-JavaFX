@@ -281,7 +281,9 @@ public class FXMLDocumentController implements Initializable {
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setScene(scene);
         stage.show();
-        modController.user.setText("Nombre de usuario: " + usuario.getNickName()); 
+        modController.user.setText("Nombre de usuario: " + usuario.getNickName());
+        modController.imagen.setImage(usuario.getAvatar());
+        modController.continuo.setDisable(true);
 
     }
 
