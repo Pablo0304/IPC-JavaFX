@@ -1,8 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * @author Pablo Gonzálbez Cabo
  */
+
 package navmap.controller;
 
 import DBAccess.NavegacionDAOException;
@@ -48,10 +47,7 @@ import model.Problem;
 import model.Session;
 import model.User;
 
-/**
- * @author Pablo Gonzálbez
- * @author Jose Marco
- */
+
 public class FXMLDocumentController implements Initializable {
 
     // ======================================

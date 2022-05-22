@@ -1,6 +1,19 @@
+Proyecto realizado por Pablo Gonzálbez Cabo.
+
 1.- Para abrir correctamente el proyecto:
-Es necesario añadir a las librerías del proyecto los .jar que se encuentran en el path "/lib" en la raíz del mismo.
+-Es necesario añadir a las librerías del proyecto los ".jar" que se encuentran en el path "/lib" en la raíz del mismo.
+-Es necesario tener bien configurado el netbeans para que se pueda ejecutar el proyecto.
 
 2.- Cosas a tener en cuenta:
-Pusimos gifs animados para el avatar pero el usuario no soportaba esa extensión.
-Hemos implementado el borrado de círculos pero el programa se satura y no responde correctamente.
+-El usuario ha de ser mayor de 12 años, por esto el datepicker tiene que situarse manualmente a, como mínimo, doce años atrás.
+-Para guardar resultados tendrá que cerrar sesión o cerrar la aplicación de los botones implementados, si no el progreso no se guardará.
+-En el código se puede observar el método "lineai" que tiene mucho código comentado, esto es la implementación de borrar puntos, círculos y el centro de la circunferencia, no están descomentados porque el programa se sobrecarga y falla, pero son correctos.
+-Puse gifs animados para el avatar pero el usuario no soportaba esa extensión.
+-He implementado el borrado de círculos pero el programa se satura y no responde correctamente.
+-Solamente se podrán marcar coordenadas si no hay herramientas de pintura o borrado activas en ese momento.
+
+3.- Funcionalidades extra:
+-La regla y el transportador rotan(arrastrar desde las esquinas de cada objeto).
+-Se pueden hacer líneas curvas discontínuas.
+-Existe un cuadrado donde se puede ver el objeto de dibujo seleccionado en cada momento.
+(Entre otras)

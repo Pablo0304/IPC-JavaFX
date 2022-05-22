@@ -1,7 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
+/**
+ * @author Pablo Gonzálbez Cabo
  */
+
 package navmap.controller;
 
 import DBAccess.NavegacionDAOException;
@@ -38,11 +38,7 @@ import javafx.stage.Stage;
 import model.Navegacion;
 import model.User;
 
-/**
- * FXML Controller class
- * @author Pablo Gonzálbez Cabo
- * @author Jose Marco
- */
+
 public class FXMLModifPerfilController implements Initializable {
 
     @FXML

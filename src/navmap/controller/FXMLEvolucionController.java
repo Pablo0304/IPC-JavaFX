@@ -1,25 +1,22 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
+/**
+ * @author Pablo Gonzálbez Cabo
  */
+
 package navmap.controller;
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import model.Navegacion;
 import model.User;
 
-/**
- * FXML Controller class
- * @author Pablo Gonzálbez Cabo
- * @author Jose Marco
- */
 public class FXMLEvolucionController implements Initializable {
 
     User usuario;
@@ -39,13 +36,21 @@ public class FXMLEvolucionController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        fecha.setDayCellFactory((DatePicker picker) -> {
+            return new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+            super.updateItem(date, empty);
+            setDisable(empty || date.compareTo(LocalDate.now()) > -1);
+            }
+            };
+        });
     }
     
     public void userInit(User usuari){
         usuario = usuari;
     }
-//    usuario.addSession(new Session(LocalDateTime.now(), aciertos, fallos));
+    
     @FXML
     private void fechas(ActionEvent event) {
         int i = 0;
